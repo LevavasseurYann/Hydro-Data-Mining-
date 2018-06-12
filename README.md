@@ -17,5 +17,7 @@ Contain all python file
 ## IPYNB files
 Some kind of user friendly main for the program
 > test_lib: fit and compute cluster for a given parameters
+-----------------
 > read_cluster: Display interactive and well understanding graphics and information about a given cluster file stored in the cluster folder
-> even more ...
+-----------------
+even more ...
