@@ -1,0 +1,7 @@
+[2011]
+[]
+Normalized: True
+Sample size(0=None): 5000
+Algorithm used: Kmean
+nb cluster: 5
+Distance measure: softdtw
