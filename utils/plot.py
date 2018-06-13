@@ -7,6 +7,8 @@ import matplotlib.pylab as plt
 from matplotlib.pylab import rcParams
 import matplotlib
 
+import math as m
+import numpy as np
 class Plot:
     """
     Classe permetant l'affichage sous forme de graph de donnees
@@ -34,7 +36,7 @@ class Plot:
         """
         #colors = matplotlib.colors.cnames.copy()
         all_group_trace = {}
-        colors_gathered = ["lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray"]
+        colors_gathered = ["lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray" "lightgray", "lightgray", "lightgray"]
         for i in range(0, self.cluster.n):
             all_group_trace[i] = []
             if self.cluster.from_save:
@@ -77,9 +79,10 @@ class Plot:
         Version legere d'affichage pour limiter la consommation de puissance d'un affichage dynamique
         """
         rcParams['figure.figsize'] = 20, 15
+        size_of = m.ceil(self.cluster.n / 3)
         plt.figure()
         for yi in range(self.cluster.n):
-            plt.subplot(3, 3, yi + 1)
+            plt.subplot(size_of, 3, yi + 1)
             for xx in self.cluster.ts[self.cluster.ts_clust == yi]:
                 plt.plot(xx.ravel(), "k-", alpha=.2)
             if self.cluster.from_save:
@@ -114,6 +117,27 @@ class Plot:
                 })
         iplot(fig)
 
+    def plot_histo(self, n):
+        """
+        Affcihe par cluster le nombre d'occurence des Capteurs de et la granularite maximale
+        """
+        x0 = self.cluster.nb_capteur[n]
+        x1 = self.cluster.nb_week[n]
+
+        trace1 = go.Histogram(
+            x=x0,
+            opacity=0.75
+        )
+        trace2 = go.Histogram(
+            x=x1,
+            opacity=0.75
+        )
+
+        data = [trace1, trace2]
+        layout = go.Layout(barmode='overlay')
+        fig = go.Figure(data=data, layout=layout)
+
+        iplot(fig, filename='overlaid histogram')
 
     def plot_scatter_light(self, data):
         """
