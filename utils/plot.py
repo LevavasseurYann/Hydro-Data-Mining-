@@ -117,6 +117,22 @@ class Plot:
                 })
         iplot(fig)
 
+    def plot_scatter_by_capteur(self, data, capteur):
+        all_trace = []
+        for cpt in capteur:
+            trace = go.Scattergl(
+            x = data[cpt]["Date"],
+            y = data[cpt]["Valeur"],
+            mode = str(self.mode),
+            name = str(str(cpt))
+            )
+            all_trace.append(trace)
+        fig = dict(data=all_trace,layout = {
+                'xaxis': {'title': 'Le temps'},
+                'yaxis': {'title': "La valeur"}
+                })
+        iplot(fig)
+
     def plot_histo(self, n):
         """
         Affcihe par cluster le nombre d'occurence des Capteurs de et la granularite maximale

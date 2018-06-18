@@ -5,7 +5,9 @@ from tslearn.utils import to_time_series
 from tslearn.utils import to_time_series_dataset
 from utils.plot import Plot
 from utils.geo import Geo
+from utils import series_supp as ss
 import pickle
+import pandas as pd
 
 class ClusterTs:
     """
@@ -142,3 +144,54 @@ class ClusterTs:
         self.cluster_by_fullname = res_full
         self.nb_capteur = nb_capteur
         self.nb_week = nb_week
+
+    def get_part_of_ts(self, data, elmt):
+        res_ts = data[elmt["capteur"]].copy()
+        res_ts = res_ts.set_index("Date")
+        if elmt["week"]:
+            res_ts = res_ts[str(elmt["year"]) +"-"+ str(elmt["month"])]
+            res_ts = res_ts.groupby(pd.Grouper(freq='W'))
+            for i in res_ts:
+                if i[0].week == elmt["week"]:
+                    res_ts = i[1]
+        elif elmt["month"]:
+            res_ts = res_ts[str(elmt["year"]) +"-"+ str(elmt["month"])]
+        else:
+            res_ts = res_ts[str(elmt["month"])]
+        res_ts = res_ts.reset_index()
+        res_ts = self.ss.normalize(res_ts)
+        return res_ts
+
+    def clust_hoverview_rng(self, n):
+        #r_RG, r_GW = ss.SeriesSupp(cwd, self.ss.factory, "RG24"), ss.SeriesSupp(cwd, factory, "GW")
+        rng_elmt = self.cluster_by_fullname[n][0]
+        elmt = self.parse_capteur_split(rng_elmt)
+        gw = self.get_part_of_ts(self.ss.dataset, elmt)
+        elmt2 = elmt.copy()
+        elmt2["capteur"] = "24h_RG007" # EN DUR TROUVER LE PLUS PROCHE
+        rg = self.get_part_of_ts(self.ss.factory.get_RG24(), elmt2)
+        self.ploter.plot_single_scatter({elmt["capteur"]: gw, elmt2["capteur"]: rg})
+
+    def clust_hoverview(self, n):
+        rng_elmt = self.cluster_by_fullname[n]
+        all_clust_origin_ts = {}
+        for elmt in rng_elmt:
+            parse = self.parse_capteur_split(elmt)
+            all_clust_origin_ts[elmt] = self.get_part_of_ts(self.ss.dataset, parse)
+        self.ploter.plot_scatter(all_clust_origin_ts)
+
+    def parse_capteur_split(self, elmt):
+        elmt = elmt.split("_")
+        capteur = elmt[0] + "_" + elmt[1]
+        year = int(elmt[2])
+        if len(elmt) > 3:
+            month = int(elmt[3])
+        else:
+            month = 0
+        if len(elmt) > 4:
+            week = int(elmt[4])
+        else:
+            week = 0
+        res = {}
+        res["capteur"], res["year"], res["month"], res["week"] = capteur, year, month, week
+        return res

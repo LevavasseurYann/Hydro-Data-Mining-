@@ -49,6 +49,7 @@ class SeriesSupp:
         reset = self.dataset.copy()
         self.tmp_dataset = reset
         self.norm = False
+        self.days = False
 
     def reset_setup(self):
         """ Full reset des variables de granularites """
