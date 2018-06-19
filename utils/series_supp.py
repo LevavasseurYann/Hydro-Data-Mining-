@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from math import sqrt
+from tslearn.preprocessing import TimeSeriesScalerMeanVariance
 date_parser = pd.to_datetime
 
 class SeriesSupp:
@@ -99,11 +100,32 @@ class SeriesSupp:
         data["Valeur"] = scaler.transform(values)
         return data
 
+    def standardize(self, data):
+        """
+        Standardize des TS, moyenne: 0 et ecart type: 1
+        Data: dataframe
+        """
+        # prepare data for standardization
+        values = data["Valeur"]
+        values = values.values.reshape((len(values), 1))
+        # train the standardization
+        t = TimeSeriesScalerMeanVariance().fit_transform(values)
+        print(t)
+        data["valeur"] = TimeSeriesScalerMeanVariance().fit_transform(values)
+        return data
+
     def dict_norm(self):
         """ Normalise un dictionnaire de TS """
         for k, v in self.tmp_dataset.items():
             #print(v.shape)
             v = self.normalize(v)
+        self.norm = True
+
+    def dict_stand(self):
+        """ Normalise un dictionnaire de TS """
+        for k, v in self.tmp_dataset.items():
+            #print(v.shape)
+            v = self.standardize(v)
         self.norm = True
 
     def split_data_years(self):
@@ -157,7 +179,7 @@ class SeriesSupp:
         self.split_data_months()
         if self.days:
             self.split_data_weeks()
- ################################################# DEPRECATED #################################################
+ ################################################# For precise split where each captor don't compare to himself #################################################
     def split_year_multi_month(self):
         res = {}
         for k, v in self.tmp_dataset.items():
