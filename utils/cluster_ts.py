@@ -26,6 +26,7 @@ class ClusterTs:
         self.proto = []
         self.last_readed = {}
         self.store_path = "cluster/13_06/"
+        self.name_file = None
         self.clust_name = "Master"
         self.metric = ""
         self.geo = Geo(self.ss.cwd)
@@ -66,6 +67,11 @@ class ClusterTs:
             return True
         return all(first == rest for rest in iterator)
 
+    def show_info(self):
+        file = open(str(self.store_path) + str(self.name_file) + ".txt", "r")
+        print (file.read())
+        file.close()
+
     def store_cluster(self, name):
         info_dict = {}
         info_dict["trace"] = self.ts
@@ -94,27 +100,12 @@ class ClusterTs:
         file.write("Distance measure: " + str(self.metric) + "\n")
         file.close()
 
-#    def read_cluster(self, path, name):
-#        infile = open(str(path) + name + ".pkl",'rb')
-#        info_dict = pickle.load(infile)
-#        infile.close()
-#        self.ts = info_dict["trace"]
-#        self.ts_clust = info_dict["classe"]
-#        self.ts_name = info_dict["name"]
-#        self.capteurs_names = info_dict["name"]
-#        self.proto = info_dict["proto"]
-#        self.n = len(info_dict["proto"])
-#        self.sampler = info_dict["sample"]
-#        self.from_save = True
-#        self.last_readed = info_dict
-#        self.ss.years = info_dict["years"]
-#        self.ss.months = info_dict["months"]
-#        self.ss.days = info_dict["days"]
-
     def read_cluster(self, path, name):
         infile = open(str(path) + name + ".pkl",'rb')
         info_dict = pickle.load(infile)
         infile.close()
+        self.store_path = path
+        self.name_file = name
         self.ts = info_dict["trace"]
         self.ts_clust = info_dict["classe"]
         self.ts_name = info_dict["name"]

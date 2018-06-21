@@ -1,7 +1,0 @@
-[2015]
-[]
-Normalized: True
-Sample size(0=None): 750
-Algorithm used: Kmean
-nb cluster: 4
-Distance measure: softdtw

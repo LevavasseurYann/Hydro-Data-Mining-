@@ -179,7 +179,7 @@ class SeriesSupp:
         self.split_data_months()
         if self.days:
             self.split_data_weeks()
- ################################################# For precise split where each captor don't compare to himself #################################################
+ ################################################# For precise split where each captor don't compare to itself #################################################
     def split_year_multi_month(self):
         res = {}
         for k, v in self.tmp_dataset.items():

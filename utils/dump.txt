@@ -1,0 +1,52 @@
+METHODE DE CLUSTERTS
+
+#    def read_cluster(self, path, name):
+#        infile = open(str(path) + name + ".pkl",'rb')
+#        info_dict = pickle.load(infile)
+#        infile.close()
+#        self.ts = info_dict["trace"]
+#        self.ts_clust = info_dict["classe"]
+#        self.ts_name = info_dict["name"]
+#        self.capteurs_names = info_dict["name"]
+#        self.proto = info_dict["proto"]
+#        self.n = len(info_dict["proto"])
+#        self.sampler = info_dict["sample"]
+#        self.from_save = True
+#        self.last_readed = info_dict
+#        self.ss.years = info_dict["years"]
+#        self.ss.months = info_dict["months"]
+#        self.ss.days = info_dict["days"]
+
+CASE DE READ CLUSTER IPYNB
+
+# rewrite pickle if needed: manually (if lack of information in the TXT for the olds clusters)
+
+#cluster_GW.last_readed["years"] = [2015, 2014, 2013, 2012]
+#cluster_GW.last_readed["months"] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+#cluster_GW.last_readed["days"] = False
+
+#import pickle
+
+#outfile = open(cluster_GW.store_path + "kmean_2015_2014_2013_2012_allmonths7" + ".pkl", "wb")
+#pickle.dump(cluster_GW.last_readed, outfile)
+#outfile.close()
+
+#cluster_RG.ss.years = cluster_GW.ss.years
+#cluster_RG.ss.months = cluster_GW.ss.months
+#cluster_RG.ss.days = cluster_GW.ss.days
+
+PLOT sax
+
+#plt.figure()
+
+plt.subplot(2, 2, 1)  # First, raw time series
+plt.plot(dataset[0].ravel(), "b-")
+plt.title("Raw time series")
+
+plt.subplot(2, 2, 3)  # Then SAX
+plt.plot(dataset[0].ravel(), "b-", alpha=0.4)
+plt.plot(sax_dataset_inv[0].ravel(), "b-")
+plt.title("SAX, %d symbols" % n_sax_symbols)
+
+#plt.tight_layout()
+#plt.show()

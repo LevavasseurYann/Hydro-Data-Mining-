@@ -30,7 +30,7 @@ class DataFactory:
 
     def get_data(self, name):
         """
-        Appel la bonne methode selon name
+        Appel la bonne methode selon name.
         name: [STRING] nom des donnees associe a une instance SeriesSUpp
         """
         if name == "RG24":
