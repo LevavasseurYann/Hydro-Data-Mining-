@@ -19,3 +19,9 @@ class PrefixSpanManager:
         for elmt in self.data:
             tmp.append(elmt.ravel())
         self.process_data = tmp
+
+    def topk(self, n):
+        return self.ps.topk(n)
+
+    def frequent(self, n):
+        return self.ps.frequent(n)

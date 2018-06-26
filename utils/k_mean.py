@@ -19,10 +19,10 @@ class Kmean(cs):
         self.clust_name = "Kmean"
         self.metric = "softdtw"
 
-    def k_mean(self, metric_params = {"gamma_sdtw": .01}, verbose = False):
-        self.km = TimeSeriesKMeans(self.n,self.metric, metric_params, verbose, random_state = self.seed)
+    def k_init(self, v = True):
+        self.km = TimeSeriesKMeans(n_clusters = self.n, metric = self.metric, metric_params = {"gamma_sdtw": .01}, verbose = v, random_state = self.seed)
 
-    def km_fit(self):
+    def k_fit(self):
         self.ts_clust = self.km.fit_predict(self.ts)
 
     def cluster_counter(self):

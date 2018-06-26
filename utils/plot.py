@@ -169,3 +169,7 @@ class Plot:
         plt.legend(loc=2)
         plt.title('Light TS plot')
         plt.show(block=False)
+
+    def plot_simple_list(self, list):
+        for elmt in list:
+            plt.plot(elmt)

@@ -19,10 +19,10 @@ class Kshape(cs):
         self.clust_name = "Kshape"
         self.metric = "shape"
 
-    def k_shape(self, verbose = True):
-        self.km = KShape(self.n, verbose, random_state = self.seed)
+    def k_init(self, v = True):
+        self.km = KShape(n_clusters = self.n, verbose = v, random_state = self.seed)
 
-    def ks_fit(self):
+    def k_fit(self):
         self.ts_clust = self.km.fit_predict(self.ts)
 
     def cluster_counter(self):

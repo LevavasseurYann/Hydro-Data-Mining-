@@ -116,6 +116,12 @@ class ClusterTs:
         self.from_save = True
         self.last_readed = info_dict
 
+    def get_cluster_n(self, n):
+        res = []
+        for xx in self.ts[self.ts_clust == n]:
+            res.append(xx)
+        return res
+
     def capteur_parser(self):
         res = {}
         res_full = {}
