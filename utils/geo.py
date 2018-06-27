@@ -2,6 +2,7 @@ from mpl_toolkits import mplot3d
 import matplotlib.pylab as plt
 from matplotlib.pylab import rcParams
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
+from scipy.spatial.distance import squareform, pdist
 from plotly.offline.offline import _plot_html
 import plotly.graph_objs as go
 from IPython.core.interactiveshell import InteractiveShell
@@ -28,6 +29,24 @@ class Geo:
     def get_geo_data(self, source):
         data = pd.read_csv(self.cwd +"\\"+ source, sep=";")
         return data
+
+    def highlight_min(self, s):
+        is_min = s == s.min()
+        return ['background-color: lightgreen' if v else '' for v in is_min]
+
+    def distance_matrix(self):
+        ggw = self.geo_GW.copy()
+        gwlist = ggw["capteur"]
+        grg = self.geo_RG.copy()
+        rglist = grg["capteur"]
+        g = pd.concat([ggw, grg])
+
+        gdist = pd.DataFrame(squareform(pdist(g.iloc[:, 1:])), columns= g.capteur.unique(), index= g.capteur.unique()).round(1)
+        gdist = gdist.drop(columns = gwlist)
+        gdist = gdist.drop(index = rglist)
+
+        gdist_style = gdist.style.apply(self.highlight_min, axis = 1)
+        return gdist_style
 
     def plot_3D (self):
         rcParams['figure.figsize'] = 8, 6

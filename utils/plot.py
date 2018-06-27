@@ -139,6 +139,7 @@ class Plot:
         """
         x0 = self.cluster.nb_capteur[n]
         x1 = self.cluster.nb_week[n]
+        x1 = [int(i) for i in x1]
 
         trace1 = go.Histogram(
             x=x0,
@@ -149,11 +150,55 @@ class Plot:
             opacity=0.75
         )
 
-        data = [trace1, trace2]
-        layout = go.Layout(barmode='overlay')
+        data = [trace2, trace1]
+        layout = go.Layout(barmode='overlay',
+            xaxis=dict(
+                autorange=True
+            ),
+            yaxis=dict(
+                autorange=True
+            )
+        )
+
         fig = go.Figure(data=data, layout=layout)
 
         iplot(fig, filename='overlaid histogram')
+
+    def plot_histo_2(self, n):
+        x0 = self.cluster.nb_capteur[n]
+        x1 = self.cluster.nb_week[n]
+        #x1 = [int(i) for i in x1]
+
+        data = [
+          go.Histogram(
+                histfunc = "count",
+                x = x0,
+                name = "count captors"
+          )
+        ]
+        iplot(data, filename='basic histogram')
+
+        data = [
+            go.Histogram(
+                histfunc = "count",
+                autobinx=False,
+                x = x1,
+                name = "count weeks",
+                xbins=dict(
+                    start=1,
+                    end=52,
+                    size=1
+                ),
+                marker=dict(
+                    color='orange'
+                )
+            )
+        ]
+        layout = go.Layout(
+            bargroupgap=0.3
+        )
+        fig = go.Figure(data=data, layout=layout)
+        iplot(fig)
 
     def plot_scatter_light(self, data):
         """
