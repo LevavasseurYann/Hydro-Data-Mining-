@@ -218,3 +218,19 @@ class Plot:
     def plot_simple_list(self, list):
         for elmt in list:
             plt.plot(elmt)
+
+    def plot_prefixspan(self, l):
+        all_trace = []
+        for elmt in l:
+            trace = go.Scattergl(
+            x = elmt[1],
+            mode = str("lines"),
+            name = str(elmt[0])
+            )
+            all_trace.append(trace)
+
+        fig = dict(data=all_trace,layout = {
+                'xaxis': {'title': 'representation des symbols'},
+                'yaxis': {'title': "y"}
+                })
+        iplot(fig)

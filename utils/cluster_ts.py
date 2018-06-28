@@ -35,6 +35,7 @@ class ClusterTs:
         self.size_min = 0
         self.nb_capteur =[]
         self.nb_week = []
+        #self.read_txt_line_info = {}
 
 
     def __repr__(self):
@@ -71,6 +72,10 @@ class ClusterTs:
         file = open(str(self.store_path) + str(self.name_file) + ".txt", "r")
         print (file.read())
         file.close()
+        #i = 0
+        #with open(str(self.store_path) + str(self.name_file) + ".txt", "r") as f:
+        #    self.read_txt_line_info[i] = f.readlines()
+        #    i += 1
 
     def store_cluster(self, name):
         info_dict = {}
@@ -115,6 +120,12 @@ class ClusterTs:
         self.sampler = info_dict["sample"]
         self.from_save = True
         self.last_readed = info_dict
+        try:
+            self.ss.years = info_dict["years"]
+            self.ss.months = info_dict["months"]
+            self.ss.days = info_dict["days"]
+        except:
+            pass
 
     def get_cluster_n(self, n):
         res = []
