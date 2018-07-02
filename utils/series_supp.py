@@ -28,6 +28,7 @@ class SeriesSupp:
         self.days = False
         self.factory = factory
         self.norm = False
+        self.rounded = False
         self.dataset_name = dataset_name
         self.reset_years()
 
@@ -114,6 +115,17 @@ class SeriesSupp:
         data["valeur"] = TimeSeriesScalerMeanVariance().fit_transform(values)
         return data
 
+    def rounding(self, data):
+        data["Valeur"] = data["Valeur"].round(1)
+        return data
+
+    def dict_round(self):
+        """ Normalise un dictionnaire de TS """
+        for k, v in self.tmp_dataset.items():
+            #print(v.shape)
+            v = self.rounding(v)
+        self.rounded = True
+
     def dict_norm(self):
         """ Normalise un dictionnaire de TS """
         for k, v in self.tmp_dataset.items():
@@ -179,6 +191,7 @@ class SeriesSupp:
         self.split_data_months()
         if self.days:
             self.split_data_weeks()
+
  ################################################# For precise split where each captor don't compare to itself #################################################
     def split_year_multi_month(self):
         res = {}

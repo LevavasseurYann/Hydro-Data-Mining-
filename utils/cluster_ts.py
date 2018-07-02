@@ -8,6 +8,7 @@ from utils.geo import Geo
 from utils import series_supp as ss
 import pickle
 import pandas as pd
+from collections import Counter
 
 class ClusterTs:
     """
@@ -69,7 +70,7 @@ class ClusterTs:
         return all(first == rest for rest in iterator)
 
     def show_info(self):
-        file = open(str(self.store_path) + str(self.name_file) + ".txt", "r")
+        file = open(str(self.name_file[:-4]) + ".txt", "r")
         print (file.read())
         file.close()
         #i = 0
@@ -105,12 +106,12 @@ class ClusterTs:
         file.write("Distance measure: " + str(self.metric) + "\n")
         file.close()
 
-    def read_cluster(self, path, name):
-        infile = open(str(path) + name + ".pkl",'rb')
+    def read_cluster(self, path = ""):
+        infile = open(str(path),'rb')
         info_dict = pickle.load(infile)
         infile.close()
         self.store_path = path
-        self.name_file = name
+        self.name_file = path
         self.ts = info_dict["trace"]
         self.ts_clust = info_dict["classe"]
         self.ts_name = info_dict["name"]
@@ -203,3 +204,18 @@ class ClusterTs:
         res = {}
         res["capteur"], res["year"], res["month"], res["week"] = capteur, year, month, week
         return res
+
+    def highlight_max(self, s):
+        is_max = s == s.max()
+        return ['background-color: red' if v else '' for v in is_max]
+
+    def style_df(self, opt, t):
+        if opt == "max":
+            t_style = t.style.apply(self.highlight_max, axis = 1)
+            return t_style
+
+    def get_captor_distribution_in_cluster(self):
+        tot = {}
+        for k, v in self.nb_capteur.items():
+            tot[k] = Counter(v)
+        return pd.DataFrame(tot)

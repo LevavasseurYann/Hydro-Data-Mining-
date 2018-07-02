@@ -48,6 +48,17 @@ class Geo:
         gdist_style = gdist.style.apply(self.highlight_min, axis = 1)
         return gdist_style
 
+    def distance_dict(self):
+        ggw = self.geo_GW.copy()
+        gwlist = ggw["capteur"]
+        grg = self.geo_RG.copy()
+        rglist = grg["capteur"]
+        g = pd.concat([ggw, grg])
+
+        gdist = pd.DataFrame(squareform(pdist(g.iloc[:, 1:])), columns= g.capteur.unique(), index= g.capteur.unique()).round(1)
+        gdist = gdist.drop(columns = gwlist)
+        gdist = gdist.drop(index = rglist)
+
     def plot_3D (self):
         rcParams['figure.figsize'] = 8, 6
         fig = plt.figure()
