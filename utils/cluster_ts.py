@@ -89,6 +89,7 @@ class ClusterTs:
         info_dict["months"] = self.ss.months
         info_dict["days"] = self.ss.days
         info_dict["size_min"] = self.size_min
+        info_dict["round"] = self.ss.rounded
 
         outfile = open(self.store_path + name + ".pkl", "wb")
         pickle.dump(info_dict, outfile)
@@ -104,6 +105,7 @@ class ClusterTs:
         file.write("Algorithm used: " + str(self.clust_name) + "\n")
         file.write("nb cluster: " + str(self.n) + "\n")
         file.write("Distance measure: " + str(self.metric) + "\n")
+        file.write("Rounded values: " + str(self.ss.rounded) +"\n")
         file.close()
 
     def read_cluster(self, path = ""):
@@ -127,6 +129,10 @@ class ClusterTs:
             self.ss.days = info_dict["days"]
         except:
             pass
+        try:
+            self.ss.rounded = info_dict["round"]
+        except:
+            self.ss.rounded = "no information"
 
     def get_cluster_n(self, n):
         res = []
@@ -219,3 +225,16 @@ class ClusterTs:
         for k, v in self.nb_capteur.items():
             tot[k] = Counter(v)
         return pd.DataFrame(tot)
+
+    def get_ts_by_captor(self, cpt):
+        res = (cpt, {})
+        i = 0
+        for elmt in range(len(self.proto)):
+            res[1][i] = []
+            i += 1
+        i = 0
+        for string in self.ts_name:
+            if cpt in string:
+                res[1][self.ts_clust[i]].append([string, self.ts[i].ravel()])
+            i += 1
+        return res

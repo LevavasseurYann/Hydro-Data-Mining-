@@ -25,6 +25,7 @@ class Geo:
         self.path_geo_GW = "geo\geo_GW.txt"
         self.geo_GW = self.get_geo_data(self.path_geo_GW)
         self.geo_RG = self.get_geo_data(self.path_geo_RG)
+        self.dist_mat = None
 
     def get_geo_data(self, source):
         data = pd.read_csv(self.cwd +"\\"+ source, sep=";")
@@ -45,19 +46,29 @@ class Geo:
         gdist = gdist.drop(columns = gwlist)
         gdist = gdist.drop(index = rglist)
 
+        self.dist_mat = gdist
+
         gdist_style = gdist.style.apply(self.highlight_min, axis = 1)
         return gdist_style
 
     def distance_dict(self):
-        ggw = self.geo_GW.copy()
-        gwlist = ggw["capteur"]
-        grg = self.geo_RG.copy()
-        rglist = grg["capteur"]
-        g = pd.concat([ggw, grg])
-
-        gdist = pd.DataFrame(squareform(pdist(g.iloc[:, 1:])), columns= g.capteur.unique(), index= g.capteur.unique()).round(1)
-        gdist = gdist.drop(columns = gwlist)
-        gdist = gdist.drop(index = rglist)
+        res = {}
+        for col in self.dist_mat:
+            res[col] = []
+        #for index, row in self.dist_mat.iteritems():
+        #for index, row in self.dist_mat.iterrows():
+        for row in self.dist_mat.itertuples():
+            xmin = min(row[1:])
+            for k, v in row._asdict().items():
+                if v == xmin:
+                    key = k
+            res[key].append(row._asdict()["Index"])
+        print(res)
+            #for elmt in row:
+            #    print(elmt)
+            #print(min(row))
+            #print(self.dist_mat.columns[index, min(row)])
+            #res[?].append(index)
 
     def plot_3D (self):
         rcParams['figure.figsize'] = 8, 6

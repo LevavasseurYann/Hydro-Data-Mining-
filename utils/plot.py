@@ -6,6 +6,9 @@ import plotly.graph_objs as go
 import matplotlib.pylab as plt
 from matplotlib.pylab import rcParams
 import matplotlib
+from matplotlib import colors as mcolors
+import random
+from utils.statics_func import *
 
 import math as m
 import numpy as np
@@ -13,6 +16,8 @@ class Plot:
     """
     Classe permetant l'affichage sous forme de graph de donnees
     """
+    #local_color = random.shuffle(COLORS)
+
     def __init__(self, cluster):
         """
         self.mode = "markers"       [STRING]Affichage des graphs Scatter (ligne, point ou ligne+point)
@@ -20,6 +25,7 @@ class Plot:
         """
         self.mode = "markers"
         self.cluster = cluster
+        self.colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
 
     def change_mode(self, m):
         if m == 1:
@@ -34,9 +40,7 @@ class Plot:
         Methode d'affichage graphique des clusters formes par l'instance ClusterTs
         Affiche chaque groupe avec une difference de couleur pour le prototype
         """
-        #colors = matplotlib.colors.cnames.copy()
         all_group_trace = {}
-        colors_gathered = ["lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray", "lightgray" "lightgray", "lightgray", "lightgray"]
         for i in range(0, self.cluster.n):
             all_group_trace[i] = []
             if self.cluster.from_save:
@@ -61,7 +65,7 @@ class Plot:
             y = trc,
             mode = str(self.mode),
             name = str(self.cluster.capteurs_names[i]),
-            marker = dict(color = colors_gathered[self.cluster.ts_clust[i]])
+            marker = dict(color = local_color[self.cluster.ts_clust[i]])
             )
             all_group_trace[self.cluster.ts_clust[i]].append(trace)
             i += 1
@@ -232,5 +236,30 @@ class Plot:
         fig = dict(data=all_trace,layout = {
                 'xaxis': {'title': 'representation des symbols'},
                 'yaxis': {'title': "y"}
+                })
+        iplot(fig)
+
+    def plot_captor_cluster_cover(self, data):
+        all_trace = []
+        for k, v in data[1].items():
+            clust_color = random.choice(list(self.colors.items()))
+            for ts in v:
+                trace = go.Scattergl(
+                y = ts[1],
+                mode = str(self.mode),
+                name = str(str(k) + str(ts[0][6:])),
+                marker = dict(
+                    color = clust_color[0]
+                    ),
+                line = dict(
+                    color = clust_color[0]
+                    )
+                )
+                all_trace.append(trace)
+
+        fig = dict(data=all_trace, layout = {
+                'xaxis': {'title': 'x'},
+                'yaxis': {'title': "y"},
+                'title':  data[0]
                 })
         iplot(fig)
