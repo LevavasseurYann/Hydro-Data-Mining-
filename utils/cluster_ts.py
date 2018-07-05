@@ -19,7 +19,7 @@ class ClusterTs:
         self.ts_clust = None
         self.ts_name = None
         self.ss = ss
-        self.sampler = 168 # 24/d - 168/w - 744[31](743[30]-696[29]-672[28])/m - 8760(8784)/y
+        self.sampler = 168 # 24/d - 168/w - 744[31](720[30]-696[29]-672[28])/m - 8760(8784)/y
         self.ploter = Plot(self)
         self.n = 5
         self.capteurs_names = []
