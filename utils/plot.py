@@ -95,8 +95,9 @@ class Plot:
                 plt.plot(self.cluster.km.cluster_centers_[yi].ravel(), "r-")
             plt.xlim(0, self.cluster.sampler)
             plt.ylim(-4, 4)
+            plt.title(yi)
             if yi == 1:
-                plt.title(self.cluster.clust_name)
+                plt.title(self.cluster.clust_name + "\n" + "1")
         plt.tight_layout()
         plt.show()
 
@@ -227,7 +228,7 @@ class Plot:
         all_trace = []
         for elmt in l:
             trace = go.Scattergl(
-            x = elmt[1],
+            y = elmt[1],
             mode = str("lines"),
             name = str(elmt[0])
             )
