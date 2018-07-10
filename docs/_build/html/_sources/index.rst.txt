@@ -10,12 +10,13 @@ principalement de classification non supervisée.
 
 :Version: 1.0 de 2018
 
-**Contents:**
+**Documentation:**
 
 .. toctree::
    :maxdepth: 1
 
-   documentation
+   documentation/Notebooks
+   documentation/Utils
 
 Installation
 ------------
@@ -29,7 +30,7 @@ Téléchargement via ``Git``:
 
 .. note::
 
-   Ce projet est developpe dans un environement conda spec-file a telecharger ici -> :download:`txt <spec-file.txt>`
+   Ce projet est developpe dans un environement conda, un fichier spec-file est a telecharger ici >>> :download:`txt <spec-file.txt>`
 
 Index
 ==================
