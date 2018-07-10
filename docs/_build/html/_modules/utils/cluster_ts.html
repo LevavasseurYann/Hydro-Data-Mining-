@@ -1,0 +1,374 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>utils.cluster_ts &#8212; Internship_Levavasseur_Yann 1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Internship_Levavasseur_Yann 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for utils.cluster_ts</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tslearn.clustering</span> <span class="k">import</span> <span class="n">TimeSeriesKMeans</span>
+<span class="kn">from</span> <span class="nn">tslearn.datasets</span> <span class="k">import</span> <span class="n">CachedDatasets</span>
+<span class="kn">from</span> <span class="nn">tslearn.preprocessing</span> <span class="k">import</span> <span class="n">TimeSeriesScalerMeanVariance</span><span class="p">,</span> <span class="n">TimeSeriesResampler</span>
+<span class="kn">from</span> <span class="nn">tslearn.utils</span> <span class="k">import</span> <span class="n">to_time_series</span>
+<span class="kn">from</span> <span class="nn">tslearn.utils</span> <span class="k">import</span> <span class="n">to_time_series_dataset</span>
+<span class="kn">from</span> <span class="nn">utils.plot</span> <span class="k">import</span> <span class="n">Plot</span>
+<span class="kn">from</span> <span class="nn">utils.geo</span> <span class="k">import</span> <span class="n">Geo</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="k">import</span> <span class="n">series_supp</span> <span class="k">as</span> <span class="n">ss</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+
+<div class="viewcode-block" id="ClusterTs"><a class="viewcode-back" href="../../documentation.html#utils.cluster_ts.ClusterTs">[docs]</a><span class="k">class</span> <span class="nc">ClusterTs</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Classe mere disposant des methodes de transformation et de manipulation des donnees a des fin de clusterisation</span>
+
+<span class="sd">    classe mere de:</span>
+<span class="sd">    - :class:`kmean`.</span>
+<span class="sd">    - :class:`kshape`.</span>
+
+<span class="sd">    Parametres</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ss : SeriesSupp</span>
+<span class="sd">        instance du manager de series temporelles</span>
+<span class="sd">    ts: Array[[[float]]]</span>
+<span class="sd">        les series temporelle au format desiree pour le clustering</span>
+<span class="sd">    ts_clust: Array[int]</span>
+<span class="sd">        Chaque entier est selon son index le cluster auquel appartient l&#39;index referant de *ts*</span>
+<span class="sd">    ts_name: Array[String]</span>
+<span class="sd">        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)</span>
+<span class="sd">    ss : SeriesSupp</span>
+<span class="sd">        instance du manager de series temporelles</span>
+<span class="sd">    sampler: int</span>
+<span class="sd">        Taille du sampling :func:`sampler`</span>
+<span class="sd">    ploter: :class:Plot</span>
+<span class="sd">        Instance d&#39;un objet d&#39;affichage</span>
+<span class="sd">    n: int</span>
+<span class="sd">        Nombre de cluster</span>
+<span class="sd">    capteurs_names: Array[String]</span>
+<span class="sd">        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*</span>
+<span class="sd">    from_save: Bool</span>
+<span class="sd">        True si les infos sont recuperees d&#39;un cluster sauvegarde</span>
+<span class="sd">    proto: Array[[[float]]]</span>
+<span class="sd">        Prototype de chaque cluster</span>
+<span class="sd">    last_readed: {Dict}</span>
+<span class="sd">        Informations recuperer depuis le fichier &#39;Pickle&#39; sauvegarde du cluster etudier</span>
+<span class="sd">    store_path: String</span>
+<span class="sd">        Chemin vers le dossier de stockage des sauvegardes</span>
+<span class="sd">        .. note::</span>
+<span class="sd">        N&#39;est plus utilise depuis l&#39;implementation d&#39;une boite de dialogue pour la recherche de fichier de sauvegarde</span>
+<span class="sd">    name_file: String</span>
+<span class="sd">        Chemin absolue vers fichier &#39;Pickle&#39;</span>
+<span class="sd">    clust_name: String</span>
+<span class="sd">        Nom de la technique de clustering de l&#39;instance</span>
+<span class="sd">    metric: String</span>
+<span class="sd">        Nom de la technique de clacul de distance de l&#39;instance</span>
+<span class="sd">    geo: :class:Geo</span>
+<span class="sd">        Instance Geo</span>
+<span class="sd">    cluster_by_name: {Dict}</span>
+<span class="sd">        Clustering des series temporelles uniquement par le nom des capteurs sans redondance</span>
+<span class="sd">    cluster_by_fullname: {Dict}</span>
+<span class="sd">        Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite</span>
+<span class="sd">    size_min: int</span>
+<span class="sd">        Taille minimale d&#39;une serie pour etre garde lors du preprocessing</span>
+<span class="sd">    nb_capteur: {Dict}</span>
+<span class="sd">        Clustering des series temporelles uniquement par le nom des capteurs redondance</span>
+<span class="sd">    nb_week: {Dict}</span>
+<span class="sd">        Lors d&#39;un decoupage en semaine, represente la redondance par capteur des semaines</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ss</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ss</span> <span class="o">=</span> <span class="n">ss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">=</span> <span class="mi">168</span> <span class="c1"># 24/d - 168/w - 744[31](720[30]-696[29]-672[28])/m - 8760(8784)/y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ploter</span> <span class="o">=</span> <span class="n">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capteurs_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_save</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proto</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_readed</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store_path</span> <span class="o">=</span> <span class="s2">&quot;cluster/13_06/&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_file</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clust_name</span> <span class="o">=</span> <span class="s2">&quot;Master&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geo</span> <span class="o">=</span> <span class="n">Geo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">cwd</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_by_name</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_by_fullname</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_min</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_capteur</span> <span class="o">=</span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_week</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1">#self.read_txt_line_info = {}</span>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Methode de representation de l&#39;instance</span>
+
+<span class="sd">        returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            String</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">my_repr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Algorithm de clustering: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">clust_name</span><span class="p">,</span> <span class="s2">&quot;Metric mesure: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;Espace de stockage: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">,</span> <span class="s2">&quot;Nombre de Clusters: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span> <span class="s2">&quot;Sampler de taille : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">my_repr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tslearn_format_export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dn</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_equal</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;Valeur&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;Valeur&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_min</span><span class="p">:</span>
+                    <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;Valeur&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+                    <span class="n">dn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">capteurs_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">df_set</span> <span class="o">=</span> <span class="n">to_time_series_dataset</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">df_set</span> <span class="o">=</span> <span class="n">TimeSeriesResampler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_set</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">df_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span> <span class="o">=</span> <span class="n">dn</span>
+
+    <span class="k">def</span> <span class="nf">set_size_min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_min</span> <span class="o">=</span> <span class="n">size</span>
+
+    <span class="k">def</span> <span class="nf">check_equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterator</span><span class="p">):</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">first</span> <span class="o">==</span> <span class="n">rest</span> <span class="k">for</span> <span class="n">rest</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">show_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_file</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1">#i = 0</span>
+        <span class="c1">#with open(str(self.store_path) + str(self.name_file) + &quot;.txt&quot;, &quot;r&quot;) as f:</span>
+        <span class="c1">#    self.read_txt_line_info[i] = f.readlines()</span>
+        <span class="c1">#    i += 1</span>
+
+    <span class="k">def</span> <span class="nf">store_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;classe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;proto&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">km</span><span class="o">.</span><span class="n">cluster_centers_</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;years&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">years</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;months&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">months</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;days&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">days</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;size_min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_min</span>
+        <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;round&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">rounded</span>
+
+        <span class="n">outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_path</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">info_dict</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+        <span class="n">outfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">store_path</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">years</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">months</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Weeks split: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">days</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Normalized: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">norm</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;min size of TS selected: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size_min</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Sample size(0=None): &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Algorithm used: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clust_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;nb cluster: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Distance measure: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Rounded values: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">rounded</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">read_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="n">infile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">),</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="n">info_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+        <span class="n">infile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_file</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;trace&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;classe&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capteurs_names</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;proto&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;proto&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">from_save</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_readed</span> <span class="o">=</span> <span class="n">info_dict</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">years</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;years&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">months</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;months&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">days</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;days&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">rounded</span> <span class="o">=</span> <span class="n">info_dict</span><span class="p">[</span><span class="s2">&quot;round&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">rounded</span> <span class="o">=</span> <span class="s2">&quot;no information&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_cluster_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span> <span class="o">==</span> <span class="n">n</span><span class="p">]:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">def</span> <span class="nf">capteur_parser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res_full</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">nb_capteur</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">nb_week</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">res_full</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">nb_capteur</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">nb_week</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">elmt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="p">:</span>
+            <span class="n">non_parse</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">)</span>
+            <span class="n">parse</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">elmt</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">parse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elmt</span><span class="p">)]]:</span>
+                <span class="n">res</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elmt</span><span class="p">)]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse</span><span class="p">)</span>
+            <span class="n">nb_capteur</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elmt</span><span class="p">)]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse</span><span class="p">)</span>
+            <span class="n">nb_week</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elmt</span><span class="p">)]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span>
+            <span class="n">res_full</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">elmt</span><span class="p">)]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">non_parse</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_by_name</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_by_fullname</span> <span class="o">=</span> <span class="n">res_full</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_capteur</span> <span class="o">=</span> <span class="n">nb_capteur</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_week</span> <span class="o">=</span> <span class="n">nb_week</span>
+
+    <span class="k">def</span> <span class="nf">get_part_of_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">elmt</span><span class="p">):</span>
+        <span class="n">res_ts</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;capteur&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">res_ts</span> <span class="o">=</span> <span class="n">res_ts</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;week&quot;</span><span class="p">]:</span>
+            <span class="n">res_ts</span> <span class="o">=</span> <span class="n">res_ts</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span> <span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">])]</span>
+            <span class="n">res_ts</span> <span class="o">=</span> <span class="n">res_ts</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="s1">&#39;W&#39;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">res_ts</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">week</span> <span class="o">==</span> <span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;week&quot;</span><span class="p">]:</span>
+                    <span class="n">res_ts</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]:</span>
+            <span class="n">res_ts</span> <span class="o">=</span> <span class="n">res_ts</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">])</span> <span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res_ts</span> <span class="o">=</span> <span class="n">res_ts</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">])]</span>
+        <span class="n">res_ts</span> <span class="o">=</span> <span class="n">res_ts</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">res_ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">res_ts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res_ts</span>
+
+    <span class="k">def</span> <span class="nf">clust_hoverview_rng</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1">#r_RG, r_GW = ss.SeriesSupp(cwd, self.ss.factory, &quot;RG24&quot;), ss.SeriesSupp(cwd, factory, &quot;GW&quot;)</span>
+        <span class="n">rng_elmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_by_fullname</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">elmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_capteur_split</span><span class="p">(</span><span class="n">rng_elmt</span><span class="p">)</span>
+        <span class="n">gw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_part_of_ts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">elmt</span><span class="p">)</span>
+        <span class="n">elmt2</span> <span class="o">=</span> <span class="n">elmt</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">elmt2</span><span class="p">[</span><span class="s2">&quot;capteur&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;24h_RG007&quot;</span> <span class="c1"># EN DUR TROUVER LE PLUS PROCHE</span>
+        <span class="n">rg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_part_of_ts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">get_RG24</span><span class="p">(),</span> <span class="n">elmt2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ploter</span><span class="o">.</span><span class="n">plot_single_scatter</span><span class="p">({</span><span class="n">elmt</span><span class="p">[</span><span class="s2">&quot;capteur&quot;</span><span class="p">]:</span> <span class="n">gw</span><span class="p">,</span> <span class="n">elmt2</span><span class="p">[</span><span class="s2">&quot;capteur&quot;</span><span class="p">]:</span> <span class="n">rg</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">clust_hoverview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">rng_elmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_by_fullname</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">all_clust_origin_ts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">elmt</span> <span class="ow">in</span> <span class="n">rng_elmt</span><span class="p">:</span>
+            <span class="n">parse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_capteur_split</span><span class="p">(</span><span class="n">elmt</span><span class="p">)</span>
+            <span class="n">all_clust_origin_ts</span><span class="p">[</span><span class="n">elmt</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_part_of_ts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">parse</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ploter</span><span class="o">.</span><span class="n">plot_scatter</span><span class="p">(</span><span class="n">all_clust_origin_ts</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse_capteur_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elmt</span><span class="p">):</span>
+        <span class="n">elmt</span> <span class="o">=</span> <span class="n">elmt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">capteur</span> <span class="o">=</span> <span class="n">elmt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">elmt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elmt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">month</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elmt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">week</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">elmt</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">week</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;capteur&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;week&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capteur</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">week</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">def</span> <span class="nf">highlight_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="n">is_max</span> <span class="o">=</span> <span class="n">s</span> <span class="o">==</span> <span class="n">s</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;background-color: red&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">is_max</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">style_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
+            <span class="n">t_style</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_max</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">t_style</span>
+
+    <span class="k">def</span> <span class="nf">get_captor_distribution_in_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tot</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_capteur</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">tot</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">tot</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_ts_by_captor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpt</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="n">cpt</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">elmt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="p">)):</span>
+            <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cpt</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">Internship_Levavasseur_Yann 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, LEVAVASSEUR_Yann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>

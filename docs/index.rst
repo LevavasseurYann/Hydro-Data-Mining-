@@ -1,20 +1,38 @@
-.. Internship_Levavasseur_Yann documentation master file, created by
-   sphinx-quickstart on Tue Jul 10 09:25:22 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Home
+====
 
-Welcome to Internship Levavasseur Yann's documentation!
-=======================================================
+Rendu du travail **Python** effectué dans le cadre d'un stage de fin d'année en Master informatique.
+**Data mining** sur des données hydrogéologiques, plusieurs techniques sont mises en place dans ce projet
+principalement de classification non supervisée.
+
+:Auteur:
+    LEVAVASSEUR Yann
+
+:Version: 1.0 de 2018
+
+**Contents:**
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+
+   documentation
+
+Installation
+------------
+
+Téléchargement via ``Git``:
+
+.. code-block:: bash
+
+   git clone https://github.com/LevavasseurYann/workspace_internship.git
 
 
+.. note::
 
-Indices and tables
+   Ce projet est developpe dans un environement conda spec-file a telecharger ici >>> :download:`txt <spec-file.txt>`
+
+Index
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

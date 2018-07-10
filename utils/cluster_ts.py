@@ -11,8 +11,61 @@ import pandas as pd
 from collections import Counter
 
 class ClusterTs:
-    """
-    Classe mere permettant de gerer et modifier les donnees afin de les clusteriser
+    """Classe mere disposant des methodes de transformation et de manipulation des donnees a des fin de clusterisation
+
+    classe mere de:
+    - :class:`kmean`.
+    - :class:`kshape`.
+
+    Parametres
+    ----------
+    ss : SeriesSupp
+        instance du manager de series temporelles
+    ts: Array[[[float]]]
+        les series temporelle au format desiree pour le clustering
+    ts_clust: Array[int]
+        Chaque entier est selon son index le cluster auquel appartient l'index referant de *ts*
+    ts_name: Array[String]
+        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)
+    ss : SeriesSupp
+        instance du manager de series temporelles
+    sampler: int
+        Taille du sampling :func:`sampler`
+    ploter: :class:Plot
+        Instance d'un objet d'affichage
+    n: int
+        Nombre de cluster
+    capteurs_names: Array[String]
+        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*
+    from_save: Bool
+        True si les infos sont recuperees d'un cluster sauvegarde
+    proto: Array[[[float]]]
+        Prototype de chaque cluster
+    last_readed: {Dict}
+        Informations recuperer depuis le fichier 'Pickle' sauvegarde du cluster etudier
+    store_path: String
+        Chemin vers le dossier de stockage des sauvegardes
+        .. note::
+        N'est plus utilise depuis l'implementation d'une boite de dialogue pour la recherche de fichier de sauvegarde
+    name_file: String
+        Chemin absolue vers fichier 'Pickle'
+    clust_name: String
+        Nom de la technique de clustering de l'instance
+    metric: String
+        Nom de la technique de clacul de distance de l'instance
+    geo: :class:Geo
+        Instance Geo
+    cluster_by_name: {Dict}
+        Clustering des series temporelles uniquement par le nom des capteurs sans redondance
+    cluster_by_fullname: {Dict}
+        Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite
+    size_min: int
+        Taille minimale d'une serie pour etre garde lors du preprocessing
+    nb_capteur: {Dict}
+        Clustering des series temporelles uniquement par le nom des capteurs redondance
+    nb_week: {Dict}
+        Lors d'un decoupage en semaine, represente la redondance par capteur des semaines
+
     """
     def __init__(self, ss):
         self.ts = None
@@ -40,6 +93,13 @@ class ClusterTs:
 
 
     def __repr__(self):
+        """ Methode de representation de l'instance
+
+        returns
+        -------
+            String
+        """
+
         my_repr = ["Algorithm de clustering: " + self.clust_name, "Metric mesure: " + self.metric, "Espace de stockage: " + self.store_path, "Nombre de Clusters: " + str(self.n), "Sampler de taille : " + str(self.sampler)]
         return '\n'.join('%s' % v for v in my_repr)
 
