@@ -1,5 +1,5 @@
 # **DATA MINING**
-Jupyter workspace et fichier python
+Jupyter workspace et fichiers python
 -----------------------------------
 DOC: http://workspace-internship.readthedocs.io/en/latest/
 
