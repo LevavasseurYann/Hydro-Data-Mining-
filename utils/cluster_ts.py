@@ -17,7 +17,7 @@ class ClusterTs:
     - :class:`kmean`.
     - :class:`kshape`.
 
-    Parametres
+    Parameters
     ----------
     ss : SeriesSupp
         instance du manager de series temporelles
@@ -93,13 +93,6 @@ class ClusterTs:
 
 
     def __repr__(self):
-        """ Methode de representation de l'instance
-
-        returns
-        -------
-            String
-        """
-
         my_repr = ["Algorithm de clustering: " + self.clust_name, "Metric mesure: " + self.metric, "Espace de stockage: " + self.store_path, "Nombre de Clusters: " + str(self.n), "Sampler de taille : " + str(self.sampler)]
         return '\n'.join('%s' % v for v in my_repr)
 
