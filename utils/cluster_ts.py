@@ -21,53 +21,53 @@ class ClusterTs:
         Parameters
         ----------
         ss : SeriesSupp
-            instance du manager de series temporelles
+        instance du manager de series temporelles
 
         Variables
         ---------
         ts: Array[[[float]]]
-            les series temporelle au format desiree pour le clustering
+        les series temporelle au format desiree pour le clustering
         ts_clust: Array[int]
-            Chaque entier est selon son index le cluster auquel appartient l'index referant de *ts*
+        Chaque entier est selon son index le cluster auquel appartient l'index referant de *ts*
         ts_name: Array[String]
-            Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)
+        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)
         ss: SeriesSupp
-            instance du manager de series temporelles
+        instance du manager de series temporelles
         sampler: int
-            Taille du sampling :func:`sampler`
+        Taille du sampling :func:`sampler`
         ploter: :class:Plot
-            Instance d'un objet d'affichage
+        Instance d'un objet d'affichage
         n: int
-            Nombre de cluster
+        Nombre de cluster
         capteurs_names: Array[String]
-            Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*
+        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*
         from_save: Bool
-            True si les infos sont recuperees d'un cluster sauvegarde
+        True si les infos sont recuperees d'un cluster sauvegarde
         proto: Array[[[float]]]
-            Prototype de chaque cluster
+        Prototype de chaque cluster
         last_readed: {Dict}
-            Informations recuperer depuis le fichier 'Pickle' sauvegarde du cluster etudier
+        Informations recuperer depuis le fichier 'Pickle' sauvegarde du cluster etudier
         store_path: String
-            Chemin vers le dossier de stockage des sauvegardes.
-            N'est plus utilise depuis l'implementation d'une boite de dialogue pour la recherche de fichier de sauvegarde
+        Chemin vers le dossier de stockage des sauvegardes.
+        N'est plus utilise depuis l'implementation d'une boite de dialogue pour la recherche de fichier de sauvegarde
         name_file: String
-            Chemin absolue vers fichier 'Pickle'
+        Chemin absolue vers fichier 'Pickle'
         clust_name: String
-            Nom de la technique de clustering de l'instance
+        Nom de la technique de clustering de l'instance
         metric: String
-            Nom de la technique de clacul de distance de l'instance
+        Nom de la technique de clacul de distance de l'instance
         geo: :class:Geo
-            Instance Geo
+        Instance Geo
         cluster_by_name: {Dict}
-            Clustering des series temporelles uniquement par le nom des capteurs sans redondance
+        Clustering des series temporelles uniquement par le nom des capteurs sans redondance
         cluster_by_fullname: {Dict}
-            Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite
+        Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite
         size_min: int
-            Taille minimale d'une serie pour etre garde lors du preprocessing
+        Taille minimale d'une serie pour etre garde lors du preprocessing
         nb_capteur: {Dict}
-            Clustering des series temporelles uniquement par le nom des capteurs redondance
+        Clustering des series temporelles uniquement par le nom des capteurs redondance
         nb_week: {Dict}
-            Lors d'un decoupage en semaine, represente la redondance par capteur des semaines
+        Lors d'un decoupage en semaine, represente la redondance par capteur des semaines
 
         Example
         ----------
