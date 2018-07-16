@@ -39,9 +39,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <div class="viewcode-block" id="DataFactory"><a class="viewcode-back" href="../../documentation/Utils/Manipulation des donnees.html#utils.data_factory.DataFactory">[docs]</a><span class="k">class</span> <span class="nc">DataFactory</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Factory fournis et importe les donnees en gerant le nombre d&#39;intances</span>
-<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">path_GW</span> <span class="o">=</span> <span class="s2">&quot;csv_prepro\GW&quot;</span>
     <span class="n">path_RG24</span> <span class="o">=</span> <span class="s2">&quot;csv_prepro\RG\precipiation_RG&quot;</span>
@@ -49,10 +46,30 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        self.RG24 = None    [STRING]Chemin pour recuperer les donnees RG24</span>
-<span class="sd">        self.RG1 = None     [STRING]Chemin pour recuperer les donnees RG1</span>
-<span class="sd">        self.GW = None      [STRING]Chemin pour recuperer les donnees GW</span>
-<span class="sd">        self.cwd = cwd      [STRING]Current working Directory</span>
+<span class="sd">        Factory fournis et importe les donnees en gerant le nombre d&#39;intances</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cwd: String</span>
+<span class="sd">            chemin d&#39;acces ou le main est excecute</span>
+
+<span class="sd">        Variables</span>
+<span class="sd">        ---------</span>
+<span class="sd">        path_RG24: String</span>
+<span class="sd">            Chemin pour recuperer les donnees RG24</span>
+<span class="sd">        path_RG1: String</span>
+<span class="sd">            Chemin pour recuperer les donnees RG1</span>
+<span class="sd">        path_GW: String</span>
+<span class="sd">            Chemin pour recuperer les donnees GW</span>
+<span class="sd">        RG24: {Dict}</span>
+<span class="sd">            Les donnees RG24</span>
+<span class="sd">        RG1: {Dict}</span>
+<span class="sd">            Les donnees RG1</span>
+<span class="sd">        GW: {Dict}</span>
+<span class="sd">            Les donnees GW</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
 
 <span class="sd">        RG24: Rain gauge, precipitation de pluie journaliere</span>
 <span class="sd">        RG1: Rain gauge, precipitation de pluie horaire</span>
@@ -65,8 +82,16 @@
 
     <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Appel la bonne methode selon name.</span>
-<span class="sd">        name: [STRING] nom des donnees associe a une instance SeriesSUpp</span>
+<span class="sd">        Dirige l&#39;importation vers la bonne methode selon le parametre</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: String</span>
+<span class="sd">            Nom du type de donnees a recuperer</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;RG24&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_RG24</span><span class="p">()</span>
@@ -87,6 +112,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">RG24</span>
 
     <span class="k">def</span> <span class="nf">get_RG1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retourne un [DICT] en guise de dataset</span>
+<span class="sd">        instancie une seule fois le dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">RG1</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">RG1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">DataFactory</span><span class="o">.</span><span class="n">path_RG1</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">RG1</span>
@@ -94,6 +123,10 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">RG1</span>
 
     <span class="k">def</span> <span class="nf">get_GW</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retourne un [DICT] en guise de dataset</span>
+<span class="sd">        instancie une seule fois le dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">GW</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">GW</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">DataFactory</span><span class="o">.</span><span class="n">path_GW</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GW</span>
@@ -104,7 +137,16 @@
     <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Recupere et retourne un Dictionnaire de Dataframe importe de multiple fichiers csv</span>
-<span class="sd">        source: [STRING] Chemin vers les fichiers csv</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        source: String</span>
+<span class="sd">            Chemin vers les fichiers csv</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dataset: {Dict}</span>
+<span class="sd">            Dictionnaire des donnees par capteurs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">all_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cwd</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">+</span> <span class="n">source</span><span class="p">)</span> <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cwd</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">+</span> <span class="n">source</span><span class="p">,</span> <span class="n">f</span><span class="p">))]</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="p">{}</span>

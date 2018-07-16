@@ -45,64 +45,7 @@
 <dl class="class">
 <dt id="utils.cluster_ts.ClusterTs">
 <em class="property">class </em><code class="descclassname">utils.cluster_ts.</code><code class="descname">ClusterTs</code><span class="sig-paren">(</span><em>ss</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/utils/cluster_ts.html#ClusterTs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.cluster_ts.ClusterTs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Classe disposant des methodes de transformation et de manipulation des donnees a des fins de classifications</p>
-<p>classe mere de:
-- <code class="xref py py-class docutils literal notranslate"><span class="pre">kmean</span></code>.
-- <code class="xref py py-class docutils literal notranslate"><span class="pre">kshape</span></code>.</p>
-<dl class="docutils">
-<dt>ss <span class="classifier-delimiter">:</span> <span class="classifier">SeriesSupp</span></dt>
-<dd>instance du manager de series temporelles</dd>
-<dt>ts: Array[[[float]]]</dt>
-<dd>les series temporelle au format desiree pour le clustering</dd>
-<dt>ts_clust: Array[int]</dt>
-<dd>Chaque entier est selon son index le cluster auquel appartient l’index referant de <em>ts</em></dd>
-<dt>ts_name: Array[String]</dt>
-<dd>Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)</dd>
-<dt>ss <span class="classifier-delimiter">:</span> <span class="classifier">SeriesSupp</span></dt>
-<dd>instance du manager de series temporelles</dd>
-<dt>sampler: int</dt>
-<dd>Taille du sampling <code class="xref py py-func docutils literal notranslate"><span class="pre">sampler()</span></code></dd>
-<dt>ploter: :class:Plot</dt>
-<dd>Instance d’un objet d’affichage</dd>
-<dt>n: int</dt>
-<dd>Nombre de cluster</dd>
-<dt>capteurs_names: Array[String]</dt>
-<dd>Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) <em>Bientot supprime</em></dd>
-<dt>from_save: Bool</dt>
-<dd>True si les infos sont recuperees d’un cluster sauvegarde</dd>
-<dt>proto: Array[[[float]]]</dt>
-<dd>Prototype de chaque cluster</dd>
-<dt>last_readed: {Dict}</dt>
-<dd>Informations recuperer depuis le fichier ‘Pickle’ sauvegarde du cluster etudier</dd>
-<dt>store_path: String</dt>
-<dd>Chemin vers le dossier de stockage des sauvegardes
-.. note::
-N’est plus utilise depuis l’implementation d’une boite de dialogue pour la recherche de fichier de sauvegarde</dd>
-<dt>name_file: String</dt>
-<dd>Chemin absolue vers fichier ‘Pickle’</dd>
-<dt>clust_name: String</dt>
-<dd>Nom de la technique de clustering de l’instance</dd>
-<dt>metric: String</dt>
-<dd>Nom de la technique de clacul de distance de l’instance</dd>
-<dt>geo: :class:Geo</dt>
-<dd>Instance Geo</dd>
-<dt>cluster_by_name: {Dict}</dt>
-<dd>Clustering des series temporelles uniquement par le nom des capteurs sans redondance</dd>
-<dt>cluster_by_fullname: {Dict}</dt>
-<dd>Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite</dd>
-<dt>size_min: int</dt>
-<dd>Taille minimale d’une serie pour etre garde lors du preprocessing</dd>
-<dt>nb_capteur: {Dict}</dt>
-<dd>Clustering des series temporelles uniquement par le nom des capteurs redondance</dd>
-<dt>nb_week: {Dict}</dt>
-<dd>Lors d’un decoupage en semaine, represente la redondance par capteur des semaines</dd>
-</dl>
-<p>See: Cluster_engine.ipynb</p>
-<p><em>Dependencies</em>
-- tslearn
-- pandas
-- Pickle</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="class">
 <dt id="utils.k_mean.Kmean">

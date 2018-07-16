@@ -46,75 +46,75 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 
 <div class="viewcode-block" id="ClusterTs"><a class="viewcode-back" href="../../documentation/Utils/Manipulation des clusters.html#utils.cluster_ts.ClusterTs">[docs]</a><span class="k">class</span> <span class="nc">ClusterTs</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Classe disposant des methodes de transformation et de manipulation des donnees a des fins de classifications</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ss</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Classe disposant des methodes de transformation et de manipulation des donnees a des fins de classifications</span>
 
-<span class="sd">    classe mere de:</span>
-<span class="sd">    - :class:`kmean`.</span>
-<span class="sd">    - :class:`kshape`.</span>
+<span class="sd">        classe mere de:</span>
+<span class="sd">        - :class:`kmean`.</span>
+<span class="sd">        - :class:`kshape`.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    ss : SeriesSupp</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ss : SeriesSupp</span>
 <span class="sd">        instance du manager de series temporelles</span>
-<span class="sd">    ts: Array[[[float]]]</span>
+
+<span class="sd">        Variables</span>
+<span class="sd">        ---------</span>
+<span class="sd">        ts: Array[[[float]]]</span>
 <span class="sd">        les series temporelle au format desiree pour le clustering</span>
-<span class="sd">    ts_clust: Array[int]</span>
+<span class="sd">        ts_clust: Array[int]</span>
 <span class="sd">        Chaque entier est selon son index le cluster auquel appartient l&#39;index referant de *ts*</span>
-<span class="sd">    ts_name: Array[String]</span>
+<span class="sd">        ts_name: Array[String]</span>
 <span class="sd">        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)</span>
-<span class="sd">    ss : SeriesSupp</span>
+<span class="sd">        ss: SeriesSupp</span>
 <span class="sd">        instance du manager de series temporelles</span>
-<span class="sd">    sampler: int</span>
+<span class="sd">        sampler: int</span>
 <span class="sd">        Taille du sampling :func:`sampler`</span>
-<span class="sd">    ploter: :class:Plot</span>
+<span class="sd">        ploter: :class:Plot</span>
 <span class="sd">        Instance d&#39;un objet d&#39;affichage</span>
-<span class="sd">    n: int</span>
+<span class="sd">        n: int</span>
 <span class="sd">        Nombre de cluster</span>
-<span class="sd">    capteurs_names: Array[String]</span>
+<span class="sd">        capteurs_names: Array[String]</span>
 <span class="sd">        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*</span>
-<span class="sd">    from_save: Bool</span>
+<span class="sd">        from_save: Bool</span>
 <span class="sd">        True si les infos sont recuperees d&#39;un cluster sauvegarde</span>
-<span class="sd">    proto: Array[[[float]]]</span>
+<span class="sd">        proto: Array[[[float]]]</span>
 <span class="sd">        Prototype de chaque cluster</span>
-<span class="sd">    last_readed: {Dict}</span>
+<span class="sd">        last_readed: {Dict}</span>
 <span class="sd">        Informations recuperer depuis le fichier &#39;Pickle&#39; sauvegarde du cluster etudier</span>
-<span class="sd">    store_path: String</span>
-<span class="sd">        Chemin vers le dossier de stockage des sauvegardes</span>
-<span class="sd">        .. note::</span>
+<span class="sd">        store_path: String</span>
+<span class="sd">        Chemin vers le dossier de stockage des sauvegardes.</span>
 <span class="sd">        N&#39;est plus utilise depuis l&#39;implementation d&#39;une boite de dialogue pour la recherche de fichier de sauvegarde</span>
-<span class="sd">    name_file: String</span>
+<span class="sd">        name_file: String</span>
 <span class="sd">        Chemin absolue vers fichier &#39;Pickle&#39;</span>
-<span class="sd">    clust_name: String</span>
+<span class="sd">        clust_name: String</span>
 <span class="sd">        Nom de la technique de clustering de l&#39;instance</span>
-<span class="sd">    metric: String</span>
+<span class="sd">        metric: String</span>
 <span class="sd">        Nom de la technique de clacul de distance de l&#39;instance</span>
-<span class="sd">    geo: :class:Geo</span>
+<span class="sd">        geo: :class:Geo</span>
 <span class="sd">        Instance Geo</span>
-<span class="sd">    cluster_by_name: {Dict}</span>
+<span class="sd">        cluster_by_name: {Dict}</span>
 <span class="sd">        Clustering des series temporelles uniquement par le nom des capteurs sans redondance</span>
-<span class="sd">    cluster_by_fullname: {Dict}</span>
+<span class="sd">        cluster_by_fullname: {Dict}</span>
 <span class="sd">        Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite</span>
-<span class="sd">    size_min: int</span>
+<span class="sd">        size_min: int</span>
 <span class="sd">        Taille minimale d&#39;une serie pour etre garde lors du preprocessing</span>
-<span class="sd">    nb_capteur: {Dict}</span>
+<span class="sd">        nb_capteur: {Dict}</span>
 <span class="sd">        Clustering des series temporelles uniquement par le nom des capteurs redondance</span>
-<span class="sd">    nb_week: {Dict}</span>
+<span class="sd">        nb_week: {Dict}</span>
 <span class="sd">        Lors d&#39;un decoupage en semaine, represente la redondance par capteur des semaines</span>
 
-<span class="sd">    Example</span>
-<span class="sd">    ----------</span>
+<span class="sd">        Example</span>
+<span class="sd">        ----------</span>
+<span class="sd">        See: Cluster_engine.ipynb</span>
 
-<span class="sd">    See: Cluster_engine.ipynb</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    ----------</span>
-
-<span class="sd">    *Dependencies*</span>
-<span class="sd">    - tslearn</span>
-<span class="sd">    - pandas</span>
-<span class="sd">    - Pickle</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ss</span><span class="p">):</span>
+<span class="sd">        Notes</span>
+<span class="sd">        ----------</span>
+<span class="sd">        *Dependencies*</span>
+<span class="sd">        - tslearn</span>
+<span class="sd">        - pandas</span>
+<span class="sd">        - Pickle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts_clust</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts_name</span> <span class="o">=</span> <span class="kc">None</span>
@@ -140,10 +140,33 @@
 
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Representation de l&#39;instance via une chaine de caracteres explicative.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ------------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">        my_repr : str</span>
+<span class="sd">            representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">my_repr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Algorithm de clustering: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">clust_name</span><span class="p">,</span> <span class="s2">&quot;Metric mesure: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;Espace de stockage: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">,</span> <span class="s2">&quot;Nombre de Clusters: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span> <span class="s2">&quot;Sampler de taille : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">)]</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">my_repr</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">tslearn_format_export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export la variable data vers le format utilise par tslearn pour la classifications</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ------------</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ----------</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">dn</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
