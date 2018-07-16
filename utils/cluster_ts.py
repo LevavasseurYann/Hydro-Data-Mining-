@@ -22,13 +22,16 @@ class ClusterTs:
         ----------
         ss : SeriesSupp
             instance du manager de series temporelles
+
+        Variables
+        ---------
         ts: Array[[[float]]]
             les series temporelle au format desiree pour le clustering
         ts_clust: Array[int]
             Chaque entier est selon son index le cluster auquel appartient l'index referant de *ts*
         ts_name: Array[String]
             Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)
-        ss : SeriesSupp
+        ss: SeriesSupp
             instance du manager de series temporelles
         sampler: int
             Taille du sampling :func:`sampler`
@@ -45,8 +48,7 @@ class ClusterTs:
         last_readed: {Dict}
             Informations recuperer depuis le fichier 'Pickle' sauvegarde du cluster etudier
         store_path: String
-            Chemin vers le dossier de stockage des sauvegardes
-            .. note::
+            Chemin vers le dossier de stockage des sauvegardes.
             N'est plus utilise depuis l'implementation d'une boite de dialogue pour la recherche de fichier de sauvegarde
         name_file: String
             Chemin absolue vers fichier 'Pickle'
@@ -69,12 +71,10 @@ class ClusterTs:
 
         Example
         ----------
-
         See: Cluster_engine.ipynb
 
         Notes
         ----------
-
         *Dependencies*
         - tslearn
         - pandas
@@ -105,10 +105,33 @@ class ClusterTs:
 
 
     def __repr__(self):
+        """
+        Representation de l'instance via une chaine de caracteres explicative.
+
+        Parameters
+        ------------
+        None
+
+        Returns
+        ----------
+        my_repr : str
+            representation.
+        """
         my_repr = ["Algorithm de clustering: " + self.clust_name, "Metric mesure: " + self.metric, "Espace de stockage: " + self.store_path, "Nombre de Clusters: " + str(self.n), "Sampler de taille : " + str(self.sampler)]
         return '\n'.join('%s' % v for v in my_repr)
 
     def tslearn_format_export(self):
+        """
+        Export la variable data vers le format utilise par tslearn pour la classifications
+
+        Parameters
+        ------------
+            None
+
+        Returns
+        ----------
+            None
+        """
         df = []
         dn = []
         for k, v in self.ss.get_data().items():

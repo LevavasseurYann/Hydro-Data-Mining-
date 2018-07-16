@@ -4,9 +4,6 @@ from os.path import isfile, join
 import os
 
 class DataFactory:
-    """
-    Factory fournis et importe les donnees en gerant le nombre d'intances
-    """
 
     path_GW = "csv_prepro\GW"
     path_RG24 = "csv_prepro\RG\precipiation_RG"
@@ -14,10 +11,30 @@ class DataFactory:
 
     def __init__(self, cwd):
         """
-        self.RG24 = None    [STRING]Chemin pour recuperer les donnees RG24
-        self.RG1 = None     [STRING]Chemin pour recuperer les donnees RG1
-        self.GW = None      [STRING]Chemin pour recuperer les donnees GW
-        self.cwd = cwd      [STRING]Current working Directory
+        Factory fournis et importe les donnees en gerant le nombre d'intances
+
+        Parameters
+        ----------
+        cwd: String
+            chemin d'acces ou le main est excecute
+
+        Variables
+        ---------
+        path_RG24: String
+            Chemin pour recuperer les donnees RG24
+        path_RG1: String
+            Chemin pour recuperer les donnees RG1
+        path_GW: String
+            Chemin pour recuperer les donnees GW
+        RG24: {Dict}
+            Les donnees RG24
+        RG1: {Dict}
+            Les donnees RG1
+        GW: {Dict}
+            Les donnees GW
+
+        Notes
+        -----
 
         RG24: Rain gauge, precipitation de pluie journaliere
         RG1: Rain gauge, precipitation de pluie horaire
@@ -30,8 +47,16 @@ class DataFactory:
 
     def get_data(self, name):
         """
-        Appel la bonne methode selon name.
-        name: [STRING] nom des donnees associe a une instance SeriesSUpp
+        Dirige l'importation vers la bonne methode selon le parametre
+
+        Parameters
+        ----------
+        name: String
+            Nom du type de donnees a recuperer
+
+        Returns
+        -------
+        None
         """
         if name == "RG24":
             return self.get_RG24()
@@ -52,6 +77,10 @@ class DataFactory:
             return self.RG24
 
     def get_RG1(self):
+        """
+        Retourne un [DICT] en guise de dataset
+        instancie une seule fois le dataset
+        """
         if self.RG1 == None:
             self.RG1 = self.get_dataset(DataFactory.path_RG1)
             return self.RG1
@@ -59,6 +88,10 @@ class DataFactory:
             return self.RG1
 
     def get_GW(self):
+        """
+        Retourne un [DICT] en guise de dataset
+        instancie une seule fois le dataset
+        """
         if self.GW == None:
             self.GW = self.get_dataset(DataFactory.path_GW)
             return self.GW
@@ -69,7 +102,16 @@ class DataFactory:
     def get_dataset(self, source):
         """
         Recupere et retourne un Dictionnaire de Dataframe importe de multiple fichiers csv
-        source: [STRING] Chemin vers les fichiers csv
+
+        Parameters
+        ----------
+        source: String
+            Chemin vers les fichiers csv
+
+        Returns
+        -------
+        dataset: {Dict}
+            Dictionnaire des donnees par capteurs
         """
         all_files = [f for f in listdir(self.cwd +"\\"+ source) if isfile(join(self.cwd +"\\"+ source, f))]
         dataset = {}
