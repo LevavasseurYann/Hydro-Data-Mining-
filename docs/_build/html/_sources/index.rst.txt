@@ -32,6 +32,16 @@ Téléchargement via ``Git``:
 
    Ce projet est developpe dans un environement conda, un fichier spec-file est a telecharger ici >>> :download:`txt <spec-file.txt>`
 
+Des questions ? Besoin d'aide ?
+   ----------------------------
+
+   Rejoingnez le chat:
+
+   - |Gitter|_
+
+   .. |Gitter| image:: https://badges.gitter.im/Neuropsydia-py/Lobby.svg
+   .. _Gitter: https://gitter.im/internship_project/Lobby
+
 Index
 ==================
 

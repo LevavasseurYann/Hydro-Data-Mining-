@@ -46,13 +46,13 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 
 <div class="viewcode-block" id="ClusterTs"><a class="viewcode-back" href="../../documentation/Utils/Manipulation des clusters.html#utils.cluster_ts.ClusterTs">[docs]</a><span class="k">class</span> <span class="nc">ClusterTs</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Classe mere disposant des methodes de transformation et de manipulation des donnees a des fin de clusterisation</span>
+    <span class="sd">&quot;&quot;&quot;Classe disposant des methodes de transformation et de manipulation des donnees a des fins de classifications</span>
 
 <span class="sd">    classe mere de:</span>
 <span class="sd">    - :class:`kmean`.</span>
 <span class="sd">    - :class:`kshape`.</span>
 
-<span class="sd">    Parametres</span>
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    ss : SeriesSupp</span>
 <span class="sd">        instance du manager de series temporelles</span>
@@ -101,6 +101,18 @@
 <span class="sd">    nb_week: {Dict}</span>
 <span class="sd">        Lors d&#39;un decoupage en semaine, represente la redondance par capteur des semaines</span>
 
+<span class="sd">    Example</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    See: Cluster_engine.ipynb</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    *Dependencies*</span>
+<span class="sd">    - tslearn</span>
+<span class="sd">    - pandas</span>
+<span class="sd">    - Pickle</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ss</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="kc">None</span>
@@ -128,13 +140,6 @@
 
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Methode de representation de l&#39;instance</span>
-
-<span class="sd">        returns</span>
-<span class="sd">        -------</span>
-<span class="sd">            String</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">my_repr</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Algorithm de clustering: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">clust_name</span><span class="p">,</span> <span class="s2">&quot;Metric mesure: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">,</span> <span class="s2">&quot;Espace de stockage: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">store_path</span><span class="p">,</span> <span class="s2">&quot;Nombre de Clusters: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">),</span> <span class="s2">&quot;Sampler de taille : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="p">)]</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">my_repr</span><span class="p">)</span>
 

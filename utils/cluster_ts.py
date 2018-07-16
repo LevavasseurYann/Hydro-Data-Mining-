@@ -11,7 +11,7 @@ import pandas as pd
 from collections import Counter
 
 class ClusterTs:
-    """Classe mere disposant des methodes de transformation et de manipulation des donnees a des fin de clusterisation
+    """Classe disposant des methodes de transformation et de manipulation des donnees a des fins de classifications
 
     classe mere de:
     - :class:`kmean`.
@@ -66,6 +66,18 @@ class ClusterTs:
     nb_week: {Dict}
         Lors d'un decoupage en semaine, represente la redondance par capteur des semaines
 
+    Example
+    ----------
+
+    See: Cluster_engine.ipynb
+
+    Notes
+    ----------
+
+    *Dependencies*
+    - tslearn
+    - pandas
+    - Pickle
     """
     def __init__(self, ss):
         self.ts = None
