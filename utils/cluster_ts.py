@@ -110,7 +110,7 @@ class ClusterTs:
 
         Parameters
         ------------
-        None
+        NA
 
         Returns
         ----------
@@ -126,11 +126,11 @@ class ClusterTs:
 
         Parameters
         ------------
-            None
+        NA
 
         Returns
         ----------
-            None
+        NA
         """
         df = []
         dn = []

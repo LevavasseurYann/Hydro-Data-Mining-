@@ -15,7 +15,6 @@
 import os
 import sys
 import mock
-import numpy
 
 sys.path.insert(0, os.path.abspath('../'))
 
@@ -23,12 +22,19 @@ MOCK_MODULES = [
         'numpy',
         'pandas',
         "sklearn",
+        "pickle",
         "sklearn.preprocessing",
         "sklearn.decomposition",
         "sklearn.cluster",
         "sklearn.metrics",
         "sklearn.linear_model",
         "matplotlib",
+        "PyQt5",
+        "plotly",
+        "mplot3d",
+        "scipy",
+        "IPython",
+        "prefixspan",
         "matplotlib.pyplot"]
 
 for mod_name in MOCK_MODULES:
