@@ -8,18 +8,35 @@ date_parser = pd.to_datetime
 class SeriesSupp:
     """
     Premet d'organiser et de manipuler les données.
+
+    Parameters
+    ----------
+    cwd: String
+        chemin d'acces ou le main est excecute
+    factory: Factory
+        Instance de la factory
+    dataset_name: String
+        Definie le type de donnees a recuperer
+
+    Variables
+    ---------
+    dataset: {Dict}
+        Le dataset original sans modification
+    tmp_dataset: {Dict}
+        Le dataset actuel avec les modification
+    years: [ARRAY<STRING>]
+        Setup de decoupage par annees
+    months: [ARRAY<STRING>]
+        Setup de decoupage par mois
+    days: [ARRAY<STRING>]
+        Setup de decoupage par annees | [BOOL] decoupage semaines
+    factory: DataFactory
+        Instance de la Factory
+    dataset_name: String
+        Permet de connaitre la source souhaite e.g import_dataset()
+
     """
     def __init__(self, cwd, factory, dataset_name):
-        """
-        self.cwd = cwd                          [STRING]Current working Directory
-        self.dataset = {}                       [DICT]Le dataset original sans modification
-        self.tmp_dataset = {}                   [DICT]Le dataset actuel avec les modification
-        self.years = []                         [ARRAY<STRING>]Setup de decoupage par annees
-        self.months = []                        [ARRAY<STRING>]Setup de decoupage par mois
-        self.days = []                          [ARRAY<STRING>]Setup de decoupage par annees | [BOOL] decoupage semaines
-        self.factory = factory                  [DataFactory]Instance de la Factory
-        self.dataset_name = dataset_name        [STRING]Permet de connaitre la source souhaite e.g import_dataset()
-        """
         self.cwd = cwd
         self.dataset = {}
         self.tmp_dataset = {}

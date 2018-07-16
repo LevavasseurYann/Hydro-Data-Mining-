@@ -1,5 +1,0 @@
-plotly==2.5.1
-numpy
-pandas
-sklearn
-matplotlib

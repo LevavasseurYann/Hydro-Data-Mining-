@@ -3,7 +3,27 @@ from prefixspan import PrefixSpan
 from utils.plot import Plot
 
 class PrefixSpanManager:
+    """
+    Classe d'outil a l'utilisation de prefixspan
 
+    Parameters
+    ----------
+    sax_engine: SaxEngine
+        Instance de preprocessing SAX
+    export: Boolean
+        Si oui ou non les donnees sont deja exportees au bon format
+
+    Variables
+    ---------
+    se_instance: SaxEngine
+        L'instance de class SAX
+    data: Array[]
+        Les donnees au format SAX
+
+    Notes
+    -----
+    ...
+    """
     def __init__(self, sax_engine, export = True):
         self.se_instance = sax_engine
         self.data = sax_engine.sax_data
