@@ -1,7 +1,2 @@
-Cython==0.27.3
-prefixspan==0.5.1.2
-scikit-learn==0.19.1
-scipy==1.0.1
-seaborn==0.8.1
 tslearn==0.1.18.3
 plotly==2.5.1
