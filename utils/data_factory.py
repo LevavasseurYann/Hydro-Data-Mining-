@@ -4,42 +4,41 @@ from os.path import isfile, join
 import os
 
 class DataFactory:
+    """
+    Factory fournis et importe les donnees en gerant le nombre d'intances
 
+    Parameters
+    ----------
+    cwd: String
+        chemin d'acces ou le main est excecute
+
+    Variables
+    ---------
+    path_RG24: String
+        Chemin pour recuperer les donnees RG24
+    path_RG1: String
+        Chemin pour recuperer les donnees RG1
+    path_GW: String
+        Chemin pour recuperer les donnees GW
+    RG24: {Dict}
+        Les donnees RG24
+    RG1: {Dict}
+        Les donnees RG1
+    GW: {Dict}
+        Les donnees GW
+
+    Notes
+    -----
+
+    RG24: Rain gauge, precipitation de pluie journaliere
+    RG1: Rain gauge, precipitation de pluie horaire
+    GW: Grand Water, donnees piezometric
+    """
     path_GW = "csv_prepro\GW"
     path_RG24 = "csv_prepro\RG\precipiation_RG"
     path_RG1 = "csv_prepro\RG\precipitation_1h_RG"
 
     def __init__(self, cwd):
-        """
-        Factory fournis et importe les donnees en gerant le nombre d'intances
-
-        Parameters
-        ----------
-        cwd: String
-            chemin d'acces ou le main est excecute
-
-        Variables
-        ---------
-        path_RG24: String
-            Chemin pour recuperer les donnees RG24
-        path_RG1: String
-            Chemin pour recuperer les donnees RG1
-        path_GW: String
-            Chemin pour recuperer les donnees GW
-        RG24: {Dict}
-            Les donnees RG24
-        RG1: {Dict}
-            Les donnees RG1
-        GW: {Dict}
-            Les donnees GW
-
-        Notes
-        -----
-
-        RG24: Rain gauge, precipitation de pluie journaliere
-        RG1: Rain gauge, precipitation de pluie horaire
-        GW: Grand Water, donnees piezometric
-        """
         self.RG24 = None
         self.RG1 = None
         self.GW = None

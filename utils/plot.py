@@ -15,14 +15,22 @@ import numpy as np
 class Plot:
     """
     Classe permetant l'affichage sous forme de graph de donnees
+
+    Parameters
+    ----------
+    cluster: ClusterTs
+        instance de partitionnement
+
+    Variables
+    ---------
+    mode: String
+        Type d'affichage des graphes
+    colors: {Dict}
+        Dictionnaire de couleur pour les plots
     """
     #local_color = random.shuffle(COLORS)
 
     def __init__(self, cluster):
-        """
-        self.mode = "markers"       [STRING]Affichage des graphs Scatter (ligne, point ou ligne+point)
-        self.cluster = cluster      [ClusterTs] Instance possedant en variable l'instance de Plot
-        """
         self.mode = "markers"
         self.cluster = cluster
         self.colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
