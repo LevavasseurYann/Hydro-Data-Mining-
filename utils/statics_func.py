@@ -65,7 +65,9 @@ def thresholding_algo(y, lag, threshold, influence):
                 avgFilter = np.asarray(avgFilter),
                 stdFilter = np.asarray(stdFilter))
 
-COLORS = ['midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
+COLORS = ["red", "green", "yellow", "blue", "orange", "purple", "cyan", "magenta", "pink", "gold", "chartreuse", "navy", "magenta", "peru", "royal blue",
+    "red", "green", "yellow", "blue", "orange", "purple", "cyan", "magenta", "pink", "gold", "chartreuse", "navy", "magenta", "peru", "royal blue"]
+COLORS_bis = ['midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
     'slate blue', 'medium slate blue', 'light slate blue', 'medium blue', 'royal blue',  'blue',
     'dodger blue', 'deep sky blue', 'sky blue', 'light sky blue', 'steel blue', 'light steel blue',
     'light blue', 'powder blue', 'pale turquoise', 'dark turquoise', 'medium turquoise', 'turquoise',
@@ -128,4 +130,4 @@ COLORS = ['midnight blue', 'navy', 'cornflower blue', 'dark slate blue',
     'MediumPurple3', 'MediumPurple4', 'thistle1', 'thistle2', 'thistle3', 'thistle4']
 
 from random import shuffle
-shuffle(COLORS)
+#shuffle(COLORS)

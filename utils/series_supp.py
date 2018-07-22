@@ -46,6 +46,7 @@ class SeriesSupp:
         self.factory = factory
         self.norm = False
         self.rounded = False
+        self.smoothed = False
         self.dataset_name = dataset_name
         self.reset_years()
 
@@ -94,15 +95,50 @@ class SeriesSupp:
         self.dataset = self.factory.get_data(self.dataset_name)
         self.reset_dataset()
 
-    def smooth(self, data, nb = 3):
+    def smooth(self, data, wind, col):
         """
-        Smooth des TS avec rolling window (a finir)
-        data: Dataframe
-        nb: [Int]Taille de la rolling window
+        Smooth via rolling window
+
+        Parameters
+        ----------
+        data: DataFrame
+            La DF a smooth, attention a bien choisir la colonne voulu
+        wind: int
+            Taille de fentre
+        col: String
+            La colonne de la DF a smooth
+
+        Returns
+        -------
+        data: DataFrame
+            La DF remanie
         """
-        rolling = data.rolling(window=nb)
-        rolling_mean = rolling.mean()
-        return rolling_mean[3:]
+        data[col] = data[col].rolling(window = wind, center = True).mean()
+        data = data.drop(list(range(len(data) - wind,len(data))))
+        data = data.drop(list(range(wind)))
+        data.reset_index()
+        return data
+
+    def dict_smooth(self, wind = 24, col = "Valeur"):
+        """
+        Dictionnaire full smooth
+
+        Parameters
+        ----------
+        wind: int
+            Taille de la fenetre 24 pour smooth journalier
+
+        Returns
+        -------
+        NA
+        """
+        res = {}
+        tampon = self.tmp_dataset.copy()
+        for k, v in tampon.items():
+            tampon_v = v.copy()
+            res[k] = self.smooth(data = tampon_v, wind = wind, col = col)
+        self.tmp_dataset = res
+        self.smoothed = True
 
     def normalize(self, data):
         """
@@ -130,10 +166,6 @@ class SeriesSupp:
         t = TimeSeriesScalerMeanVariance().fit_transform(values)
         print(t)
         data["valeur"] = TimeSeriesScalerMeanVariance().fit_transform(values)
-        return data
-
-    def rounding(self, data):
-        data["Valeur"] = data["Valeur"].round(1)
         return data
 
     def dict_round(self):

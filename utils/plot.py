@@ -33,7 +33,8 @@ class Plot:
     def __init__(self, cluster):
         self.mode = "markers"
         self.cluster = cluster
-        self.colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+        #self.colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+        self.colors = COLORS
 
     def change_mode(self, m):
         if m == 1:
@@ -237,7 +238,7 @@ class Plot:
         for elmt in l:
             trace = go.Scattergl(
             y = elmt[1],
-            mode = str("lines"),
+            mode = str(self.mode),
             name = str(elmt[0])
             )
             all_trace.append(trace)
@@ -250,18 +251,21 @@ class Plot:
 
     def plot_captor_cluster_cover(self, data):
         all_trace = []
+        i = 0
         for k, v in data[1].items():
-            clust_color = random.choice(list(self.colors.items()))
+            clust_color = self.colors[i]
+            i += 1
+            print(clust_color)
             for ts in v:
                 trace = go.Scattergl(
                 y = ts[1],
                 mode = str(self.mode),
                 name = str(str(k) + str(ts[0][6:])),
                 marker = dict(
-                    color = clust_color[0]
+                    color = clust_color
                     ),
                 line = dict(
-                    color = clust_color[0]
+                    color = clust_color
                     )
                 )
                 all_trace.append(trace)
@@ -270,5 +274,30 @@ class Plot:
                 'xaxis': {'title': 'x'},
                 'yaxis': {'title': "y"},
                 'title':  data[0]
+                })
+        iplot(fig)
+
+    def plot_simple_TS(self, ts):
+        """
+        Plot une liste de valeur
+
+        Parameters
+        ----------
+        ts: Array[int]
+            Liste de valeur a afficher
+
+        Returns
+        -------
+        NA
+        """
+        trace = go.Scattergl(
+        y = ts,
+        mode = str(self.mode),
+        name = str("Ma TS")
+        )
+
+        fig = dict(data=[trace],layout = {
+                'xaxis': {'title': 'x'},
+                'yaxis': {'title': "y"}
                 })
         iplot(fig)
