@@ -16,7 +16,7 @@ import os
 import sys
 import mock
 
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../'))
 
 MOCK_MODULES = [
         'numpy',
@@ -26,9 +26,12 @@ MOCK_MODULES = [
         "tslearn",
         "collections",
         "matplotlib",
+        "PyQt5",
         "plotly",
+        "mplot3d",
         "scipy",
         "prefixspan",
+        "plotly.offline",
         "matplotlib.pylab",
         "random",
         "matplotlib.pyplot"]
