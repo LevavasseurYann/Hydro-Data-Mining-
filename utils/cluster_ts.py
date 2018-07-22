@@ -225,6 +225,7 @@ class ClusterTs:
         info_dict["days"] = self.ss.days
         info_dict["size_min"] = self.size_min
         info_dict["round"] = self.ss.rounded
+        info_dict["smoothed"] = self.ss.smoothed
 
         outfile = open(self.store_path + name + ".pkl", "wb")
         pickle.dump(info_dict, outfile)
@@ -241,6 +242,7 @@ class ClusterTs:
         file.write("nb cluster: " + str(self.n) + "\n")
         file.write("Distance measure: " + str(self.metric) + "\n")
         file.write("Rounded values: " + str(self.ss.rounded) +"\n")
+        file.write("smoothed values: " + str(self.ss.smoothed) +"\n")
         file.close()
 
     def read_cluster(self, path = ""):
@@ -280,6 +282,10 @@ class ClusterTs:
             self.ss.rounded = info_dict["round"]
         except:
             self.ss.rounded = "no information"
+        try:
+            self.ss.smoothed = info_dict["smoothed"]
+        except:
+            self.ss.smoothed = "no information"
 
     def get_cluster_n(self, n):
         """
