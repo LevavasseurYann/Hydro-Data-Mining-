@@ -20,13 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 
 MOCK_MODULES = [
         'numpy',
-        'pandas',
-        "sklearn",
-        "pickle",
-        "tslearn",
-        "collections",
-        "matplotlib",
-        "plotly"]
+        'pandas']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
