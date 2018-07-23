@@ -26,12 +26,7 @@ MOCK_MODULES = [
         "tslearn",
         "collections",
         "matplotlib",
-        "plotly",
-        "scipy",
-        "prefixspan",
-        "matplotlib.pylab",
-        "random",
-        "matplotlib.pyplot"]
+        "plotly"]
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = mock.Mock()
