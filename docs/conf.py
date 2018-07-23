@@ -16,7 +16,8 @@ import os
 import sys
 import mock
 
-sys.path.insert(0, os.path.abspath('../'))
+#sys.path.insert(0, os.path.abspath('../'))
+sys.path.append(os.path.abspath('../'))
 
 MOCK_MODULES = [
         'numpy',

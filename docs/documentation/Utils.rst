@@ -12,3 +12,6 @@ Architectures
    Utils/Manipulation des donnees
    Utils/Fonctions globales
    Utils/Motifs sequentiels
+
+.. automodule:: Utils.cluster_ts
+   :members:
