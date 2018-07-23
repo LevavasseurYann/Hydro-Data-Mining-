@@ -6,10 +6,9 @@ Les fichiers pythons sont stockes dans le package utils, chaque module est une c
 Architectures
 -------------
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    Utils/Manipulation des clusters
    Utils/Manipulation des donnees
    Utils/Fonctions globales
    Utils/Motifs sequentiels
-   

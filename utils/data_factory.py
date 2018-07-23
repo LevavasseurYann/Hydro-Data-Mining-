@@ -30,9 +30,9 @@ class DataFactory:
     Notes
     -----
 
-    RG24: Rain gauge, precipitation de pluie journaliere
-    RG1: Rain gauge, precipitation de pluie horaire
-    GW: Grand Water, donnees piezometric
+    * RG24: Rain gauge, precipitation de pluie journaliere
+    * RG1: Rain gauge, precipitation de pluie horaire
+    * GW: Grand Water, donnees piezometric
     """
     path_GW = "csv_prepro\GW"
     path_RG24 = "csv_prepro\RG\precipiation_RG"

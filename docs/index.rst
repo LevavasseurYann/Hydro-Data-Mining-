@@ -13,7 +13,7 @@ principalement de classification non supervisée.
 **Documentation:**
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 3
 
    documentation/Notebooks
    documentation/Utils
