@@ -122,7 +122,8 @@ class Geo:
                 if v == xmin:
                     key = k
             res[key].append(row._asdict()["Index"])
-        print(res)
+        #print(res)
+        self.distance_dict = res
             #for elmt in row:
             #    print(elmt)
             #print(min(row))
@@ -334,3 +335,14 @@ class Geo:
                 })
 
         iplot(fig)
+
+    def get_minrange_rg(self, cpt):
+        true_cpt = cpt[:2]
+        true_cpt += cpt[3:]
+        res = ""
+        for k, v in self.distance_dict.items():
+            if true_cpt in v:
+                res = k
+        if res == "":
+            res = "RG007"
+        return res

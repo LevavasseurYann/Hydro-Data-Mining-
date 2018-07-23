@@ -9,6 +9,7 @@ from utils import series_supp as ss
 import pickle
 import pandas as pd
 from collections import Counter
+from utils.statics_func import *
 
 class ClusterTs:
     """Classe disposant des methodes de transformation et de manipulation des donnees a des fins de partitionnements
@@ -355,7 +356,13 @@ class ClusterTs:
         """
         res_ts = data[elmt["capteur"]].copy()
         res_ts = res_ts.set_index("Date")
-        if elmt["week"]:
+        if elmt["week"] and not elmt["month"]:
+            res_ts = res_ts[str(elmt["year"])]
+            res_ts = res_ts.groupby(pd.Grouper(freq='W'))
+            for i in res_ts:
+                if i[0].week == elmt["week"]:
+                    res_ts = i[1]
+        elif elmt["week"] and elmt["month"]:
             res_ts = res_ts[str(elmt["year"]) +"-"+ str(elmt["month"])]
             res_ts = res_ts.groupby(pd.Grouper(freq='W'))
             for i in res_ts:
@@ -404,10 +411,11 @@ class ClusterTs:
         ----------
         NA
         """
-        rng_elmt = self.cluster_by_fullname[n]
+        elmt_clust = self.cluster_by_fullname[n]
         all_clust_origin_ts = {}
-        for elmt in rng_elmt:
+        for elmt in elmt_clust:
             parse = self.parse_capteur_split(elmt)
+            #print(parse)
             all_clust_origin_ts[elmt] = self.get_part_of_ts(self.ss.dataset, parse)
         self.ploter.plot_scatter(all_clust_origin_ts)
 
@@ -428,12 +436,16 @@ class ClusterTs:
         elmt = elmt.split("_")
         capteur = elmt[0] + "_" + elmt[1]
         year = int(elmt[2])
-        if len(elmt) > 3:
+        if len(elmt) > 3 and not self.ss.days:
             month = int(elmt[3])
         else:
             month = 0
         if len(elmt) > 4:
             week = int(elmt[4])
+        else:
+            week = 0
+        if len(elmt) > 3 and self.ss.days:
+            week = int(elmt[3])
         else:
             week = 0
         res = {}
@@ -505,3 +517,37 @@ class ClusterTs:
                 res[1][self.ts_clust[i]].append([string, self.ts[i].ravel()])
             i += 1
         return res
+
+    def get_clust_part_for_captor(self, cpt):
+        """
+        recupere les cluster pour capteur **cpt** donne et leur distribution au sein des cluster
+
+        Parameters
+        ------------
+        cpt: String
+            Capteur target
+
+        Returns
+        ----------
+        res: String
+            Seulement les noms des date pour chacun des clusters
+        """
+        res = (cpt, {})
+        i = 0
+        for elmt in range(len(self.proto)):
+            res[1][i] = []
+            i += 1
+        i = 0
+        for string in self.ts_name:
+            if cpt in string:
+                res[1][self.ts_clust[i]].append(string)
+            i += 1
+        return res
+
+    def aff_color(self):
+        """
+        Affiche les couleurs utilise dans le clustering
+        """
+        c = COLORS[:self.n + 1]
+        df = pd.DataFrame({'colors':c})
+        print(df.T)

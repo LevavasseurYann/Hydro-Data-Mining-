@@ -227,7 +227,7 @@ class SeriesSupp:
         """ Decoupage des TS selon les semaines"""
         res = {}
         for k, v in self.tmp_dataset.items():
-            tmp = v.groupby(pd.Grouper(key='Date',freq='W'))
+            tmp = v.groupby(pd.Grouper(key='Date', freq='W'))
             for i in tmp:
                 if i[1].shape[0] != 0:
                     res[str(k) + "_" + str(i[0].week) ] = i[1]

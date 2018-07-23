@@ -134,16 +134,70 @@ class Plot:
     def plot_scatter_by_capteur(self, data, capteur):
         all_trace = []
         for cpt in capteur:
+            for k, v in data.items():
+                if cpt in k:
+                    trace = go.Scattergl(
+                    x = data[k]["Date"],
+                    y = data[k]["Valeur"],
+                    mode = str(self.mode),
+                    name = str(str(k))
+                    )
+                    all_trace.append(trace)
+        fig = dict(data=all_trace,layout = {
+                'xaxis': {'title': 'Le temps'},
+                'yaxis': {'title': "La valeur"}
+                })
+        iplot(fig)
+
+    def plot_scatter_by_capteur_color_cluster(self, data, dict_clust, rg = None):
+        """
+        Affiche un capteur et colorise selon l'appartenance au cluster
+        """
+        all_trace = []
+        clust_color = "black"
+        #for cpt in capteur:
+        cpt = dict_clust[0]
+        for k, v in data.items():
+            #print("Si: " + str(cpt) + " dans: " + str(k))
+            if cpt in k:
+                #print("True")
+                clust_color = "black"
+                for kbis, vbis in dict_clust[1].items():
+                    #print("Si: " + str(k) + " dans: " + str(vbis))
+                    if k in vbis:
+                        #print("True")
+                        clust_color = self.colors[kbis]
+                trace = go.Scattergl(
+                x = data[k]["Date"],
+                y = data[k]["Valeur"],
+                mode = str(self.mode),
+                name = str(str(clust_color) + str(k[6:])),
+                marker = dict(
+                    color = clust_color
+                    ),
+                line = dict(
+                    color = clust_color
+                    )
+                )
+                all_trace.append(trace)
+        if rg != None:
             trace = go.Scattergl(
-            x = data[cpt]["Date"],
-            y = data[cpt]["Valeur"],
+            x = rg[1]["Date"],
+            y = rg[1]["Valeur"],
             mode = str(self.mode),
-            name = str(str(cpt))
+            name = str(rg[0]),
+            marker = dict(
+                color = "black"
+                ),
+            line = dict(
+                color = "white"
+                )
             )
             all_trace.append(trace)
         fig = dict(data=all_trace,layout = {
                 'xaxis': {'title': 'Le temps'},
-                'yaxis': {'title': "La valeur"}
+                'yaxis': {'title': "La valeur"},
+                'title': dict_clust[0]
                 })
         iplot(fig)
 
@@ -255,7 +309,7 @@ class Plot:
         for k, v in data[1].items():
             clust_color = self.colors[i]
             i += 1
-            print(clust_color)
+            #print(clust_color)
             for ts in v:
                 trace = go.Scattergl(
                 y = ts[1],
@@ -269,7 +323,6 @@ class Plot:
                     )
                 )
                 all_trace.append(trace)
-
         fig = dict(data=all_trace, layout = {
                 'xaxis': {'title': 'x'},
                 'yaxis': {'title': "y"},
