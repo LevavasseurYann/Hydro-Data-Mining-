@@ -12,7 +12,8 @@ prompt-toolkit==1.0.15
 scikit-image==0.13.1
 scikit-learn==0.19.1
 scipy==1.0.1
+pyximport
 tslearn==0.1.18.3
 matplotlib==2.2.2
-pyximport
+
 
