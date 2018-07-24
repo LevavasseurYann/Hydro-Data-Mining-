@@ -41,9 +41,3 @@ Des questions ? Besoin d'aide ?
 
    .. |Gitter| image:: https://badges.gitter.im/Neuropsydia-py/Lobby.svg
    .. _Gitter: https://gitter.im/internship_project/Lobby
-
-Index
-==================
-
-* :ref:`genindex`
-* :ref:`search`
