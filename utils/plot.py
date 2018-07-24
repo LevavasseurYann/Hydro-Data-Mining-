@@ -181,19 +181,20 @@ class Plot:
                 )
                 all_trace.append(trace)
         if rg != None:
-            trace = go.Scattergl(
-            x = rg[1]["Date"],
-            y = rg[1]["Valeur"],
-            mode = str(self.mode),
-            name = str(rg[0]),
-            marker = dict(
-                color = "black"
-                ),
-            line = dict(
-                color = "white"
+            for k, v in rg[1].items():
+                trace = go.Scattergl(
+                x = v["Date"],
+                y = v["Valeur"],
+                mode = str(self.mode),
+                name = str(k),
+                marker = dict(
+                    color = "black"
+                    ),
+                line = dict(
+                    color = "white"
+                    )
                 )
-            )
-            all_trace.append(trace)
+                all_trace.append(trace)
         fig = dict(data=all_trace,layout = {
                 'xaxis': {'title': 'Le temps'},
                 'yaxis': {'title': "La valeur"},

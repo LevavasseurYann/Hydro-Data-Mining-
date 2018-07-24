@@ -2,7 +2,7 @@ name: base
 channels:
   - pytorch
   - conda-forge
-  - defaults
+  - nodefaults
 dependencies:
   - bzip2=1.0.6=vc14_1
   - curl=7.59.0=vc14_1
