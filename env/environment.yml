@@ -24,7 +24,6 @@ dependencies:
   - sqlite
   - tk
   - tslearn
-  - winpty
   - yaml
   - zeromq
   - zlib
