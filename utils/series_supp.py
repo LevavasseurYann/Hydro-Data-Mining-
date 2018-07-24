@@ -146,12 +146,13 @@ class SeriesSupp:
         Data: dataframe
         """
         # prepare data for standardization
-        values = data["Valeur"]
-        values = values.values.reshape((len(values), 1))
+        values = data.loc[:,("Valeur")]
+        values_r = values.values.reshape((len(values), 1))
         # train the standardization
         scaler = StandardScaler()
-        scaler = scaler.fit(values)
-        data["Valeur"] = scaler.transform(values)
+        scaler = scaler.fit(values_r)
+        tr_v = scaler.transform(values_r)
+        data["Valeur"] = tr_v
         return data
 
     def standardize(self, data):
@@ -240,6 +241,26 @@ class SeriesSupp:
         self.split_data_months()
         if self.days:
             self.split_data_weeks()
+
+    def get_data_from_captor(self, cpt):
+        """
+        Retourne toutes les series temporelles liees a un nom de capteur
+
+        Parameters
+        ----------
+        cpt: String
+            Nom du capteur desire
+
+        Returns
+        -------
+        res: {Dict}
+            Sous dataset du capteur associe, les clefs sont les differente declinaisons en series temporelles du capteur, varie en longueur selon la granularite
+        """
+        res = {}
+        for k, v in self.tmp_dataset.items():
+            if cpt in k:
+                res[k] = v
+        return res
 
  ################################################# For precise split where each captor don't compare to itself #################################################
     def split_year_multi_month(self):
