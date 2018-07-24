@@ -10,4 +10,4 @@ install:
   conda update conda
 
 conda:
-  file: env/environment.yml
+  file: env/env_light.yml

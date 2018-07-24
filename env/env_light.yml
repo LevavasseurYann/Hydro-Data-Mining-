@@ -1,0 +1,58 @@
+name: base
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - sqlite
+  - tk
+  - tslearn
+  - yaml
+  - ipykernel
+  - ipywidgets
+  - matplotlib
+  - nose
+  - numpy
+  - numpydoc
+  - pandas
+  - pandoc
+  - pandocfilters
+  - pickleshare
+  - pip
+  - plotly
+  - py
+  - pycodestyle
+  - pycosat
+  - pycparser
+  - pycrypto
+  - pycurl
+  - pyflakes
+  - pygments
+  - pylint
+  - pyodbc
+  - pyopenssl
+  - pyparsing
+  - pyqt
+  - pyqtgraph
+  - pyreadline
+  - pysocks
+  - pytables
+  - pytest
+  - python
+  - python-dateutil
+  - pytz
+  - pywavelets
+  - pywin32
+  - pywinpty
+  - pyyaml
+  - pyzmq
+  - qtawesome
+  - qtconsole
+  - qtpy
+  - scikit-image
+  - scikit-learn
+  - scipy
+  - setuptools
+  - statsmodels
+
+prefix: C:\Users\utilisateur\Anaconda3
+
