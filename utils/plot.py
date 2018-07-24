@@ -191,7 +191,7 @@ class Plot:
                     color = "black"
                     ),
                 line = dict(
-                    color = "white"
+                    color = "black"
                     )
                 )
                 all_trace.append(trace)
