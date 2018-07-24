@@ -13,6 +13,4 @@ author = "LEVAVASSEUR Yann",
 author_email = "levavasseuryann@gmail.com",
 maintainer = "LEVAVASSEUR Yann",
 maintainer_email = "levavasseuryann@gmail.com",
-keywords = "python",
-url = "https://github.com/LevavasseurYann/workspace_internship",
 )
