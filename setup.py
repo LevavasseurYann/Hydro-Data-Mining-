@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import re
 import os
-cmd = 'pip install --upgrade setuptools'
+cmd = 'pip install --upgrade pip'
 os.system(cmd)
 
 # ------------------
