@@ -14,17 +14,17 @@
 #
 import os
 import sys
-import mock
+#import mock
 
 #sys.path.insert(0, os.path.abspath('../'))
 sys.path.append(os.path.abspath('../'))
 
-MOCK_MODULES = [
-        'numpy',
-        'pandas']
+#MOCK_MODULES = [
+#        'numpy',
+#        'pandas']
 
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
+#for mod_name in MOCK_MODULES:
+#    sys.modules[mod_name] = mock.Mock()
 # -- Project information -----------------------------------------------------
 
 project = 'Internship_Levavasseur_Yann'
