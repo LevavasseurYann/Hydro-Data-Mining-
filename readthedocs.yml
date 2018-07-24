@@ -6,5 +6,8 @@ build:
 python:
   version: 3.6
 
+install:
+  conda update conda
+
 conda:
   file: env/environment.yml

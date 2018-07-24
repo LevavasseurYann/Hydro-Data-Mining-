@@ -2,8 +2,9 @@ name: base
 channels:
   - pytorch
   - conda-forge
-  - nodefaults
+  - defaults
 dependencies:
+  - bzip2=1.0.6=vc14_1
   - curl=7.59.0=vc14_1
   - freetype=2.8.1=vc14_0
   - hdf5=1.10.1=vc14_2
@@ -60,7 +61,7 @@ dependencies:
   - colorama=0.3.9=py36h029ae33_0
   - commonmark=0.7.5=py36_0
   - comtypes=1.1.4=py36_0
-  - conda=4.5.4=py36_0
+  - conda=4.5.8=py36_0
   - conda-build=3.4.1=py36_0
   - conda-env=2.6.0=h36134e3_1
   - conda-verify=2.0.0=py36h065de53_0
