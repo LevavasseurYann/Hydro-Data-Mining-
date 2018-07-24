@@ -1,10 +1,8 @@
 from setuptools import setup, find_packages
 import re
 import os
-cmd1 = "pip3 install --upgrade pip3"
-cmd2 = "pip3 install --upgrade setuptools"
+cmd1 = "python -m install --upgrade pip"
 os.system(cmd1)
-os.system(cmd2)
 
 # ------------------
 
