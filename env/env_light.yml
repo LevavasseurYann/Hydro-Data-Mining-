@@ -10,5 +10,6 @@ dependencies:
   - plotly
   - scikit-learn
   - scipy
+  - cloudpickle
 
 prefix: C:\Users\utilisateur\Anaconda3
