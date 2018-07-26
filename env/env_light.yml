@@ -13,7 +13,6 @@ dependencies:
   - docopt
   - sphinx
   - ipykernel
-  - nbsphinx
   - sphinx-gallery
   - pillow
   - tensorflow==1.4
