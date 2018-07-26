@@ -7,7 +7,6 @@ dependencies:
   - matplotlib
   - numpy
   - pandas
-  - pickle
   - plotly
   - scikit-learn
   - scipy
