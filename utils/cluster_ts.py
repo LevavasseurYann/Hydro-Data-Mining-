@@ -1,15 +1,15 @@
-from tslearn.clustering import TimeSeriesKMeans
-from tslearn.datasets import CachedDatasets
-from tslearn.preprocessing import TimeSeriesScalerMeanVariance, TimeSeriesResampler
-from tslearn.utils import to_time_series
-from tslearn.utils import to_time_series_dataset
-from utils.plot import Plot
-from utils.geo import Geo
-from utils import series_supp as ss
-import pickle
-import pandas as pd
-from collections import Counter
-from utils.statics_func import *
+#from tslearn.clustering import TimeSeriesKMeans
+#from tslearn.datasets import CachedDatasets
+#from tslearn.preprocessing import TimeSeriesScalerMeanVariance, TimeSeriesResampler
+#from tslearn.utils import to_time_series
+#from tslearn.utils import to_time_series_dataset
+#from utils.plot import Plot
+#from utils.geo import Geo
+#from utils import series_supp as ss
+#import pickle
+#import pandas as pd
+#from collections import Counter
+#from utils.statics_func import *
 
 class ClusterTs:
     """Classe disposant des methodes de transformation et de manipulation des donnees a des fins de partitionnements
