@@ -17,6 +17,8 @@ principalement de classification non supervisée.
 
    documentation/Notebooks
    documentation/Utils
+   source/utils
+   source/modules
 
 Installation
 ------------
