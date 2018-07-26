@@ -9,6 +9,5 @@ dependencies:
   - cloudpickle
   - plotly
   - scikit-learn
-  - tslearn
 
 prefix: C:\Users\utilisateur\Anaconda3
