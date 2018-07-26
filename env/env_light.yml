@@ -2,13 +2,13 @@ name: base
 channels:
   - defaults
 dependencies:
-  - tslearn
   - matplotlib
   - numpy
   - pandas
-  - plotly
-  - scikit-learn
   - scipy
   - cloudpickle
+  - plotly
+  - scikit-learn
+  - tslearn
 
 prefix: C:\Users\utilisateur\Anaconda3
