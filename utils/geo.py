@@ -5,9 +5,6 @@ from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 from scipy.spatial.distance import squareform, pdist
 from plotly.offline.offline import _plot_html
 import plotly.graph_objs as go
-from IPython.core.interactiveshell import InteractiveShell
-InteractiveShell.ast_node_interactivity = "all"
-init_notebook_mode(connected=True)
 from matplotlib.pylab import rcParams
 import pandas as pd
 import numpy as np

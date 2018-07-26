@@ -1,12 +1,12 @@
 from plotly import __version__
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-from plotly.offline.offline import _plot_html
+from plotly.offline import plot, iplot
+#from plotly.offline.offline import _plot_html
 import plotly.graph_objs as go
 
 import matplotlib.pylab as plt
 from matplotlib.pylab import rcParams
 import matplotlib
-from matplotlib import colors as mcolors
+#from matplotlib import colors as mcolors
 import random
 from utils.statics_func import *
 
