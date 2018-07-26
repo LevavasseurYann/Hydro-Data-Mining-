@@ -13,10 +13,7 @@ dependencies:
   - docopt
   - sphinx
   - ipykernel
-  - sphinx-gallery
-  - pillow
   - tensorflow==1.4
   - keras==2.0.8
-  - Pygments
 
 prefix: C:\Users\utilisateur\Anaconda3
