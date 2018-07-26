@@ -3,30 +3,13 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - sqlite
-  - tk
   - tslearn
-  - yaml
-  - ipykernel
-  - ipywidgets
   - matplotlib
-  - nose
   - numpy
-  - numpydoc
   - pandas
-  - pandoc
-  - pandocfilters
-  - pickleshare
-  - pip
+  - pickle
   - plotly
-  - qtawesome
-  - qtconsole
-  - qtpy
-  - scikit-image
   - scikit-learn
   - scipy
-  - setuptools
-  - statsmodels
 
 prefix: C:\Users\utilisateur\Anaconda3
-
