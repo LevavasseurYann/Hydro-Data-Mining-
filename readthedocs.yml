@@ -6,6 +6,7 @@ build:
 python:
   version: 3.6
   setup_py_install: true
+  pip_install: true
 
 conda:
   file: env/env_light.yml
