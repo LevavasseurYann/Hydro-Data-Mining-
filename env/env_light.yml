@@ -14,9 +14,9 @@ dependencies:
   - sphinx
   - ipykernel
   - keras==2.0.8
-  - tensorflow==1.4
+  - tensorflow==1.4.1
   - Cython
   - prefixspan
-  - git+https://github.com/rtavenar/tslearn.git
+  - tslearn
 
 prefix: C:\Users\utilisateur\Anaconda3
