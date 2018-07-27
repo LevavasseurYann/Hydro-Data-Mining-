@@ -15,5 +15,7 @@ dependencies:
   - ipykernel
   - tensorflow
   - keras
+  - Cython
+  - tslearn
 
 prefix: C:\Users\utilisateur\Anaconda3
