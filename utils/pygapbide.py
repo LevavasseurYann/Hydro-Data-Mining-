@@ -15,15 +15,20 @@ class GapbideManager:
              * Z2: Indice au sein de la transaction du debut du patterns
              * Z3: Indice de fin...)
     """
-    def __init__(self, gp):
+    def __init__(self, gp = None):
         self.gp = gp
         self.dataset = None
         self.res = None
 
     def run(self):
-        pass
+        self.res = self.gp.run()
 
+    def clean_import_db(self, db):
+        for compact_list in db:
+            self.dataset.append(compact_list.ravel())
 
+    def reset_gp(self, sup, m, n):
+        self.gp = Gapbide(self.dataset, sup, m, n)
 
 class Gapbide:
     def __init__(self, sdb, sup, m, n):
