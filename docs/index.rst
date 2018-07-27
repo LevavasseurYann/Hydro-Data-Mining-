@@ -16,8 +16,6 @@ principalement de classification non supervisée.
    :maxdepth: 1
 
    documentation/Notebooks
-   documentation/Utils
-   source/utils
    source/modules
 
 Installation
