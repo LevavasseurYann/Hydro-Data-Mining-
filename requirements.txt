@@ -1,18 +1,2 @@
 -e git+https://github.com/bitprophet/alabaster/@5f249677242be96601e034edb3697b7482a6abcf#egg=alabaster
-fastdtw==0.3.2
-ipywidgets==7.2.1
-kshape==1.0.1
-numpy==1.14.0
-numpydoc==0.7.0
-pandas==0.22.0
-pandocfilters==1.4.2
-plotly==2.5.1
-prefixspan==0.5.1.2
-prompt-toolkit==1.0.15
-scikit-image==0.13.1
-scikit-learn==0.19.1
-scipy==1.0.1
-Cython==0.27.3
-matplotlib==2.2.2
-
-
+tslearn
