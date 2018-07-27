@@ -17,8 +17,8 @@ import sys
 import mock
 
 #sys.path.insert(0, os.path.abspath('../'))
-#sys.path.append(os.path.abspath('../'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.append(os.path.abspath('../'))
+#sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
 MOCK_MODULES = [
         'tslearn']
