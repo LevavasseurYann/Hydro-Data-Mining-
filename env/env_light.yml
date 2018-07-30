@@ -19,6 +19,7 @@ dependencies:
   - Cython
   - pip:
     - tslearn
+    - prefixspan
 
 
 prefix: C:\Users\utilisateur\Anaconda3

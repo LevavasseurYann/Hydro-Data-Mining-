@@ -15,24 +15,24 @@ class Geo:
     propre a la NC, la classe dispose de plusieurs type d'affichage
 
     Parameters:
-        cwd: String
+        * cwd: String
             Chemin vers le main
 
     Variables:
-        path_geo_RG: String
+        * path_geo_RG: String
             Chemin pour recuperer les donnees RG
-        path_geo_GW: String
+        * path_geo_GW: String
             Chemin pour recuperer les donnees GW
-        geo_RG: {Dict}
+        * geo_RG: {Dict}
             Les donnees geo_RG
-        geo_GW: {Dict}
+        * geo_GW: {Dict}
             Les donnees geo_GW
-        dist_mat: pandas.DataFrame
+        * dist_mat: pandas.DataFrame
             Matrice des distances entre les pluviometre et des piezometres
 
     Notes:
-        RG: Rain gauge, precipitation de pluie journaliere
-        GW: Grand Water, donnees piezometric
+        * RG: Rain gauge, precipitation de pluie journaliere
+        * GW: Grand Water, donnees piezometric
     """
     def __init__(self, cwd):
         self.cwd = cwd
