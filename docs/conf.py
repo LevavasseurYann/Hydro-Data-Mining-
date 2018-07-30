@@ -14,17 +14,20 @@
 #
 import os
 import sys
-import mock
+from unittest.mock import MagicMock
+
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+MOCK_MODULES = ['tslearn', 'prefixspan', 'numpy', 'pandas']
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 #sys.path.insert(0, os.path.abspath('../'))
 sys.path.append(os.path.abspath('../'))
 #sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
-MOCK_MODULES = [
-        'tslearn']
-
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = mock.Mock()
 # -- Project information -----------------------------------------------------
 
 project = 'Internship_Levavasseur_Yann'
