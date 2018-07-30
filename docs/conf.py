@@ -23,17 +23,27 @@ class Mock(MagicMock):
         return MagicMock()
 
 MOCK_MODULES = ['tslearn',
-                'prefixspan',
+                'PrefixSpan',
                 'numpy',
                 'pandas',
                 'pickle',
                 'scipy',
                 'mplot3d',
                 'tslearn.clustering',
+                'TimeSeriesKMeans',
                 'tslearn.datasets',
+                'CachedDatasets',
                 'tslearn.preprocessing',
-                'tslearn.utils']
-                
+                'TimeSeriesScalerMeanVariance',
+                'TimeSeriesResampler',
+                'TimeSeriesScalerMeanVariance',
+                'StandardScaler',
+                'tslearn.utils',
+                'to_time_series',
+                'to_time_series_dataset',
+                'tslearn.piecewise',
+                'SymbolicAggregateApproximation']
+
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 #sys.path.insert(0, os.path.abspath('../'))
