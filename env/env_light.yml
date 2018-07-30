@@ -1,9 +1,9 @@
 name: base
 channels:
-  - conda-forge
   - defaults
 dependencies:
   - alabaster
+  - mock
   - matplotlib
   - cloudpickle
   - plotly
