@@ -17,5 +17,6 @@ dependencies:
   - keras==2.0.8
   - tensorflow==1.4.1
   - Cython
+  - tslearn
 
 prefix: C:\Users\utilisateur\Anaconda3

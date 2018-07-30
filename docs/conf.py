@@ -22,7 +22,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ["tslearn"]
+SAMLL_MOCK_MODULES = ["tslearn"]
 
 FULL_MOCK_MODULES = ['tslearn',
                 'PrefixSpan',
