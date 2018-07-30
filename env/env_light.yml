@@ -5,18 +5,9 @@ channels:
 dependencies:
   - alabaster
   - matplotlib
-  - numpy
-  - pandas
-  - scipy
   - cloudpickle
   - plotly
   - scikit-learn
-  - docopt
   - sphinx
-  - ipykernel
-  - keras==2.0.8
-  - tensorflow==1.4.1
-  - Cython
-  - tslearn
 
 prefix: C:\Users\utilisateur\Anaconda3
