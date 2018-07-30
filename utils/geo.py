@@ -14,28 +14,25 @@ class Geo:
     Classe entièrement dedie a l'affichage des capteur dans l'espace les donnees sont normees suivant un type de geolocalisation geologique
     propre a la NC, la classe dispose de plusieurs type d'affichage
 
-    Parameters
-    ----------
-    cwd: String
-        Chemin vers le main
+    Parameters:
+        cwd: String
+            Chemin vers le main
 
-    Variables
-    ---------
-    path_geo_RG: String
-        Chemin pour recuperer les donnees RG
-    path_geo_GW: String
-        Chemin pour recuperer les donnees GW
-    geo_RG: {Dict}
-        Les donnees geo_RG
-    geo_GW: {Dict}
-        Les donnees geo_GW
-    dist_mat: pandas.DataFrame
-        Matrice des distances entre les pluviometre et des piezometres
-    Notes
-    -----
+    Variables:
+        path_geo_RG: String
+            Chemin pour recuperer les donnees RG
+        path_geo_GW: String
+            Chemin pour recuperer les donnees GW
+        geo_RG: {Dict}
+            Les donnees geo_RG
+        geo_GW: {Dict}
+            Les donnees geo_GW
+        dist_mat: pandas.DataFrame
+            Matrice des distances entre les pluviometre et des piezometres
 
-    RG: Rain gauge, precipitation de pluie journaliere
-    GW: Grand Water, donnees piezometric
+    Notes:
+        RG: Rain gauge, precipitation de pluie journaliere
+        GW: Grand Water, donnees piezometric
     """
     def __init__(self, cwd):
         self.cwd = cwd
@@ -49,15 +46,13 @@ class Geo:
         """
         Recupere les donnees geographique
 
-        Parameters
-        ----------
-        source: String
-            location ou recuperer ces donnees
+        Parameters:
+            source: String
+                location ou recuperer ces donnees
 
-        Returns
-        -------
-        data: pandas.DataFrame
-            Donnees sous forme de tableau
+        Returns:
+            data: pandas.DataFrame
+                Donnees sous forme de tableau
         """
         data = pd.read_csv(self.cwd +"\\"+ source, sep=";")
         return data
@@ -66,15 +61,13 @@ class Geo:
         """
         Parametre d'affichage surligne les min par ligne de DataFrame
 
-        Parameters
-        ------------
-        s: pandas
-            Ligne du tableau
+        Parameters:
+            s: pandas
+                Ligne du tableau
 
-        Returns
-        ----------
-        unnamed: pands.style
-            Affichage des min
+        Returns:
+            unnamed: pands.style
+                Affichage des min
         """
         is_min = s == s.min()
         return ['background-color: lightgreen' if v else '' for v in is_min]
@@ -83,14 +76,12 @@ class Geo:
         """
         Retourne une dataframe representant les distances entre piezo et pluvio ainsi que les distances les plus courte
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        gdist_style: pandas.style
-            Matrice stylise des distances
+        Returns:
+            gdist_style: pandas.style
+                Matrice stylise des distances
         """
         ggw = self.geo_GW.copy()
         gwlist = ggw["capteur"]
@@ -131,13 +122,11 @@ class Geo:
         """
         Afficha 3D des geolocalisations des ouvrages
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         rcParams['figure.figsize'] = 8, 6
         fig = plt.figure()
@@ -208,14 +197,12 @@ class Geo:
         Afficha 3D des geolocalisations des ouvrages avec plotly cette fois
         Plus utilise que le premier
 
-        Parameters
-        ------------
-        names: String
-            Nom des capteurs pour les afficher au survol
+        Parameters:
+            names: String
+                Nom des capteurs pour les afficher au survol
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         tmp = self.geo_GW[~self.geo_GW["capteur"].isin(names)]
         tmp_names = []
