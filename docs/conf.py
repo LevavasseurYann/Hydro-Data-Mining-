@@ -22,7 +22,18 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ['tslearn', 'prefixspan', 'numpy', 'pandas', 'pickle', 'scipy', 'mplot3d']
+MOCK_MODULES = ['tslearn',
+                'prefixspan',
+                'numpy',
+                'pandas',
+                'pickle',
+                'scipy',
+                'mplot3d',
+                'tslearn.clustering',
+                'tslearn.datasets',
+                'tslearn.preprocessing',
+                'tslearn.utils']
+                
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 #sys.path.insert(0, os.path.abspath('../'))
