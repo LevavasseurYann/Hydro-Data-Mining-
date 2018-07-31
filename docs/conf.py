@@ -22,8 +22,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ['tslearn',
-                'numpy']
+MOCK_MODULES = []
 
 FULL_MOCK_MODULES = ['tslearn',
                 'PrefixSpan',
@@ -47,7 +46,7 @@ FULL_MOCK_MODULES = ['tslearn',
                 'tslearn.piecewise',
                 'SymbolicAggregateApproximation']
 
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+#sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 #sys.path.insert(0, os.path.abspath('../'))
 #sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))

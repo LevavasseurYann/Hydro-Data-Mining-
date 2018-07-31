@@ -6,6 +6,7 @@ dependencies:
   - alabaster
   - matplotlib
   - numpy
+  - numpydoc 
   - pandas
   - scipy
   - cloudpickle
