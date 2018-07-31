@@ -14,15 +14,16 @@
 #
 import os
 import sys
-#from unittest.mock import MagicMock
-from mock import Mock as MagicMock
-
+from unittest.mock import MagicMock
+#from mock import Mock as MagicMock
+sys.path.append(os.path.abspath('../'))
 class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
         return MagicMock()
 
-MOCK_MODULES = ['tslearn']
+MOCK_MODULES = ['tslearn',
+                'numpy']
 
 FULL_MOCK_MODULES = ['tslearn',
                 'PrefixSpan',
@@ -49,7 +50,6 @@ FULL_MOCK_MODULES = ['tslearn',
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 #sys.path.insert(0, os.path.abspath('../'))
-sys.path.append(os.path.abspath('../'))
 #sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
 # -- Project information -----------------------------------------------------
