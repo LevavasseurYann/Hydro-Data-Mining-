@@ -15,70 +15,66 @@ class ClusterTs:
     """Classe disposant des methodes de transformation et de manipulation des donnees a des fins de partitionnements
 
     classe mere de:
-    * :class:`kmean`.
-    * :class:`kshape`.
+        * :class:`kmean`
+        * :class:`kshape`
 
-    Parameters
-    ----------
-    ss : SeriesSupp
-        instance du manager de series temporelles
+    Parameters:
+        * ss : SeriesSupp
+            instance du manager de series temporelles
 
-    Variables
-    ---------
-    ts: Array[[[float]]]
-        les series temporelle au format desiree pour le clustering
-    ts_clust: Array[int]
-        Chaque entier est selon son index le cluster auquel appartient l'index referant de *ts*
-    ts_name: Array[String]
-        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)
-    ss: SeriesSupp
-        instance du manager de series temporelles
-    sampler: int
-        Taille du sampling :func:`sampler`
-    ploter: :class:Plot
-        Instance d'un objet d'affichage
-    n: int
-        Nombre de cluster
-    capteurs_names: Array[String]
-        Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*
-    from_save: Bool
-        True si les infos sont recuperees d'un cluster sauvegarde
-    proto: Array[[[float]]]
-        Prototype de chaque cluster
-    last_readed: {Dict}
-        Informations recuperer depuis le fichier 'Pickle' sauvegarde du cluster etudier
-    store_path: String
-        Chemin vers le dossier de stockage des sauvegardes.
-        N'est plus utilise depuis l'implementation d'une boite de dialogue pour la recherche de fichier de sauvegarde
-    name_file: String
-        Chemin absolue vers fichier 'Pickle'
-    clust_name: String
-        Nom de la technique de clustering de l'instance
-    metric: String
-        Nom de la technique de clacul de distance de l'instance
-    geo: :class:Geo
-        Instance Geo
-    cluster_by_name: {Dict}
-        Clustering des series temporelles uniquement par le nom des capteurs sans redondance
-    cluster_by_fullname: {Dict}
-        Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite
-    size_min: int
-        Taille minimale d'une serie pour etre garde lors du preprocessing
-    nb_capteur: {Dict}
-        Clustering des series temporelles uniquement par le nom des capteurs redondance
-    nb_week: {Dict}
-        Lors d'un decoupage en semaine, represente la redondance par capteur des semaines
+    Variables:
+        * ts: Array[[[float]]]
+            les series temporelle au format desiree pour le clustering
+        * ts_clust: Array[int]
+            Chaque entier est selon son index le cluster auquel appartient l'index referant de *ts*
+        * ts_name: Array[String]
+            Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine)
+        * ss: SeriesSupp
+            instance du manager de series temporelles
+        * sampler: int
+            Taille du sampling :func:`sampler`
+        * ploter: :class:Plot
+            Instance d'un objet d'affichage
+        * n: int
+            Nombre de cluster
+        * capteurs_names: Array[String]
+            Nom de la serie temporelle, du capteur a sa granularite (annee, mois, semaine) *Bientot supprime*
+        * from_save: Bool
+            True si les infos sont recuperees d'un cluster sauvegarde
+        * proto: Array[[[float]]]
+            Prototype de chaque cluster
+        * last_readed: {Dict}
+            Informations recuperer depuis le fichier 'Pickle' sauvegarde du cluster etudier
+        * store_path: String
+            Chemin vers le dossier de stockage des sauvegardes.
+            N'est plus utilise depuis l'implementation d'une boite de dialogue pour la recherche de fichier de sauvegarde
+        * name_file: String
+            Chemin absolue vers fichier 'Pickle'
+        * clust_name: String
+            Nom de la technique de clustering de l'instance
+        * metric: String
+            Nom de la technique de clacul de distance de l'instance
+        * geo: :class:Geo
+            Instance Geo
+        * cluster_by_name: {Dict}
+            Clustering des series temporelles uniquement par le nom des capteurs sans redondance
+        * cluster_by_fullname: {Dict}
+            Clustering des series temporelles uniquement par le nom des capteurs et leurs granularite
+        * size_min: int
+            Taille minimale d'une serie pour etre garde lors du preprocessing
+        * nb_capteur: {Dict}
+            Clustering des series temporelles uniquement par le nom des capteurs redondance
+        * nb_week: {Dict}
+            Lors d'un decoupage en semaine, represente la redondance par capteur des semaines
 
-    Example
-    -------
-    See: Cluster_engine.ipynb
+    Example:
+        See: Cluster_engine.ipynb
 
-    Notes
-    -----
-    *Dependencies*
-    - tslearn
-    - pandas
-    - Pickle
+    Notes:
+        *Dependencies*:
+            - tslearn
+            - pandas
+            - Pickle
     """
     def __init__(self, ss):
         self.ts = None
@@ -119,21 +115,23 @@ class ClusterTs:
         my_repr = ["Algorithm de clustering: " + self.clust_name, "Metric mesure: " + self.metric, "Espace de stockage: " + self.store_path, "Nombre de Clusters: " + str(self.n), "Sampler de taille : " + str(self.sampler)]
         return '\n'.join('%s' % v for v in my_repr)
 
-    def tslearn_format_export(self):
+    def tslearn_format_export(self, other_data = None):
         """
         Export la variable data vers le format utilise par tslearn pour la partitionnements
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        NA
+        Returns::
+            NA
         """
         df = []
         dn = []
-        for k, v in self.ss.get_data().items():
+        if other_data != None:
+            data_dict = other_data
+        else:
+            data_dict = self.ss.get_data()
+        for k, v in data_dict.items():
             if not self.check_equal(v["Valeur"].values):
                 if len(v["Valeur"].values) > self.size_min:
                     df.append(v["Valeur"].values)
@@ -149,14 +147,12 @@ class ClusterTs:
         """
         Set taille minimale d'une TS pour etre gardee
 
-        Parameters
-        ------------
-        size: int
-            Taille minimale
+        Parameters:
+            * size: int
+                Taille minimale
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         self.size_min = size
 
@@ -164,14 +160,12 @@ class ClusterTs:
         """
         Verifie si la TS reste tout le temps sur la meme valeur
 
-        Parameters
-        ------------
-        iterator: iterator
-            la TS
+        Parameters:
+            * iterator: iterator
+                la TS
 
-        Returns
-        ----------
-        Bool
+        Returns:
+            Bool
         """
         iterator = iter(iterator)
         try:
@@ -184,13 +178,11 @@ class ClusterTs:
         """
         Affiche les informations recuperees depuis le txt d'info de la sauvegarde cluster lie a l'instance
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         file = open(str(self.name_file[:-4]) + ".txt", "r")
         print (file.read())
@@ -204,14 +196,12 @@ class ClusterTs:
         """
         Sauvegarde sur forme de fichier pickle associe a un txt d'information la partitionnement actuelle de l'instance
 
-        Parameters
-        ------------
-        name: String
-            Nom du fichier, represente les parametre principaux de la partitionnement
+        Parameters:
+            * name: String
+                Nom du fichier, represente les parametre principaux de la partitionnement
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         info_dict = {}
         info_dict["trace"] = self.ts
@@ -248,14 +238,12 @@ class ClusterTs:
         """
         Ouvre et recupere toutes les informations d'un fichier pickle(sauvegarde d'un clustering) et update les variable de l'instance pour correspondre
 
-        Parameters
-        ------------
-        path: String
-            Chemin d'acces au fichier
+        Parameters:
+            * path: String
+                Chemin d'acces au fichier
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         infile = open(str(path),'rb')
         info_dict = pickle.load(infile)
@@ -290,15 +278,13 @@ class ClusterTs:
         """
         Retourne les TS d'un cluster **n**
 
-        Parameters
-        ------------
-        n: int
-            Numero de cluster souhaite
+        Parameters:
+            * n: int
+                Numero de cluster souhaite
 
-        Returns
-        ----------
-        res: Array[float]
-            Ensemble des TS du cluster
+        Returns:
+            res: Array[float]
+                Ensemble des TS du cluster
         """
         res = []
         for xx in self.ts[self.ts_clust == n]:
@@ -309,13 +295,11 @@ class ClusterTs:
         """
         Parser des noms de capteurs, pour pouvoir garder en memoire les nom des capteur et leur extention de date selon la TS
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         res = {}
         res_full = {}
@@ -340,17 +324,15 @@ class ClusterTs:
         """
         Selon les Parameters d'elmt retrouve une partie des donnes depuis data
 
-        Parameters
-        ------------
-        data: {Dict}
-            Donnee depuis les quelles on souhaite recuperer une partie precise
-        elmt: {Dict}
-            Information liee a la demande (date)
+        Parameters:
+            * data: {Dict}
+                Donnee depuis les quelles on souhaite recuperer une partie precise
+            * elmt: {Dict}
+                Information liee a la demande (date)
 
-        Returns
-        ----------
-        res_ts: Array[float]
-            TS souhaitee
+        Returns:
+            res_ts: Array[float]
+                TS souhaitee
         """
         res_ts = data[elmt["capteur"]].copy()
         res_ts = res_ts.set_index("Date")
@@ -378,14 +360,12 @@ class ClusterTs:
         """
         DEPRECATED: Tire une TS random d'un cluster **n** pour se donner une idee des membres de ce dernier
 
-        Parameters
-        ------------
-        n: int
-            Le cluster numero n
+        Parameters:
+            * n: int
+                Le cluster numero n
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         #r_RG, r_GW = ss.SeriesSupp(cwd, self.ss.factory, "RG24"), ss.SeriesSupp(cwd, factory, "GW")
         rng_elmt = self.cluster_by_fullname[n][0]
@@ -400,14 +380,12 @@ class ClusterTs:
         """
         Affiche les TS d'un cluster **n** donnee
 
-        Parameters
-        ------------
-        n: int
-            cluster selectionne
+        Parameters:
+            * n: int
+                cluster selectionne
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         elmt_clust = self.cluster_by_fullname[n]
         all_clust_origin_ts = {}
@@ -421,15 +399,13 @@ class ClusterTs:
         """
         Recupere les information d'une TS depuis son nom comme le nom de son capteur et la date
 
-        Parameters
-        ------------
-        elmt: String
-            Nom du capteur avec info
+        Parameters:
+            * elmt: String
+                Nom du capteur avec info
 
-        Returns
-        ----------
-        res: {Dict}
-            Les infos decoupes et range dans un dico
+        Returns:
+            res: {Dict}
+                Les infos decoupes et range dans un dico
         """
         elmt = elmt.split("_")
         capteur = elmt[0] + "_" + elmt[1]
@@ -454,15 +430,13 @@ class ClusterTs:
         """
         Parametre d'affichage surligne les max par ligne de DataFrame
 
-        Parameters
-        ------------
-        s: pandas
-            Ligne du tableau
+        Parameters:
+            * s: pandas
+                Ligne du tableau
 
-        Returns
-        ----------
-        unnamed: pands.style
-            Affichage des max
+        Returns:
+            unnamed: pands.style
+                Affichage des max
         """
         is_max = s == s.max()
         return ['background-color: red' if v else '' for v in is_max]
@@ -476,14 +450,12 @@ class ClusterTs:
         """
         Retourne le nombre d'occurance des cpateur dans chacun des clusters
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        unnamed: DataFrame
-            Tableau d'occurance
+        Returns:
+            unnamed: DataFrame
+                Tableau d'occurance
         """
         tot = {}
         for k, v in self.nb_capteur.items():
@@ -494,15 +466,13 @@ class ClusterTs:
         """
         recupere les TS pour capteur **cpt** donne et leur distribution au sein des cluster
 
-        Parameters
-        ------------
-        cpt: String
-            Capteur target
+        Parameters:
+            * cpt: String
+                Capteur target
 
-        Returns
-        ----------
-        res: tuple(String, {Dict})
-            String represente le capteur et le dictionnaires la distribution des sous TS dans chaque clusters (key = cluster)
+        Returns:
+            res: tuple(String, {Dict})
+                String represente le capteur et le dictionnaires la distribution des sous TS dans chaque clusters (key = cluster)
         """
         res = (cpt, {})
         i = 0
@@ -520,15 +490,13 @@ class ClusterTs:
         """
         recupere les cluster pour capteur **cpt** donne et leur distribution au sein des cluster
 
-        Parameters
-        ------------
-        cpt: String
-            Capteur target
+        Parameters:
+            * cpt: String
+                Capteur target
 
-        Returns
-        ----------
-        res: String
-            Seulement les noms des date pour chacun des clusters
+        Returns:
+            res: String
+                Seulement les noms des date pour chacun des clusters
         """
         res = (cpt, {})
         i = 0
