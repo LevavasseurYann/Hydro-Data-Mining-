@@ -3,7 +3,26 @@ from tslearn.piecewise import SymbolicAggregateApproximation
 
 class SaxEngine:
     """
-    Etude des motifs dans un dataset de series temporelles
+    Manager SAX(SymbolicAggregateApproximation) pour formater les donnees temporelles vers unhe suites de segments a symboles representatifs
+
+    Parameters:
+        * nsy : int
+            Nombre de symbols
+        * nsy : int
+            Nombre de segments
+
+    Variables:
+        * raw_data : ArrayList
+            Donnees brutes
+        * process_data : ArrayList
+            Donnees retravaillees pour correspondre au format fit()
+        * sax_data_inv : ArrayList
+            Donnees au format SAX mais de meme taille len() que les donnees brutes
+        * sax_data : ArrayList
+            Donnees au format SAX
+
+    Example:
+        See: Sequential_pattern_mining.ipynb
     """
     def __init__(self, nsy, nse):
         self.raw_data = []
@@ -15,6 +34,15 @@ class SaxEngine:
         #self.sax = None
 
     def reset(self):
+        """
+        Reinitialise les variables d'instance
+
+        Parameters:
+            NA
+
+        Returns:
+            NA
+        """
         self.raw_data = []
         self.process_data = []
         self.sax_data_inv = []

@@ -16,17 +16,15 @@ class Plot:
     """
     Classe permetant l'affichage sous forme de graph de donnees
 
-    Parameters
-    ----------
-    cluster: ClusterTs
-        instance de partitionnement
+    Parameters:
+        * cluster: ClusterTs
+            instance de partitionnement
 
-    Variables
-    ---------
-    mode: String
-        Type d'affichage des graphes
-    colors: {Dict}
-        Dictionnaire de couleur pour les plots
+    Variables:
+        * mode: String
+            Type d'affichage des graphes
+        * colors: {Dict}
+            Dictionnaire de couleur pour les plots
     """
     #local_color = random.shuffle(COLORS)
 
@@ -335,14 +333,12 @@ class Plot:
         """
         Plot une liste de valeur
 
-        Parameters
-        ----------
-        ts: Array[int]
-            Liste de valeur a afficher
+        Parameters:
+            * ts: Array[int]
+                Liste de valeur a afficher
 
-        Returns
-        -------
-        NA
+        Returns:
+            NA
         """
         trace = go.Scattergl(
         y = ts,

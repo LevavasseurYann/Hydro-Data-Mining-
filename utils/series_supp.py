@@ -9,31 +9,29 @@ class SeriesSupp:
     """
     Premet d'organiser et de manipuler les données.
 
-    Parameters
-    ----------
-    cwd: String
-        chemin d'acces ou le main est excecute
-    factory: Factory
-        Instance de la factory
-    dataset_name: String
-        Definie le type de donnees a recuperer
+    Parameters:
+        * cwd: String
+            chemin d'acces ou le main est excecute
+        * factory: Factory
+            Instance de la factory
+        * dataset_name: String
+            Definie le type de donnees a recuperer
 
-    Variables
-    ---------
-    dataset: {Dict}
-        Le dataset original sans modification
-    tmp_dataset: {Dict}
-        Le dataset actuel avec les modification
-    years: [ARRAY<STRING>]
-        Setup de decoupage par annees
-    months: [ARRAY<STRING>]
-        Setup de decoupage par mois
-    days: [ARRAY<STRING>]
-        Setup de decoupage par annees | [BOOL] decoupage semaines
-    factory: DataFactory
-        Instance de la Factory
-    dataset_name: String
-        Permet de connaitre la source souhaite e.g import_dataset()
+    Variables:
+        * dataset: {Dict}
+            Le dataset original sans modification
+        * tmp_dataset: {Dict}
+            Le dataset actuel avec les modification
+        * years: [ARRAY<STRING>]
+            Setup de decoupage par annees
+        * months: [ARRAY<STRING>]
+            Setup de decoupage par mois
+        * days: [ARRAY<STRING>]
+            Setup de decoupage par annees | [BOOL] decoupage semaines
+        * factory: DataFactory
+            Instance de la Factory
+        * dataset_name: String
+            Permet de connaitre la source souhaite e.g import_dataset()
 
     """
     def __init__(self, cwd, factory, dataset_name):
@@ -55,13 +53,13 @@ class SeriesSupp:
         return str("Dataset: " + str(self.dataset_name) + ". De taille source: " + str(len(self.dataset)) + ". et de taille current: " + str(len(self.tmp_dataset)))
 
     def reset_years(self):
-        """Par defaut decoupe les TS dans la granuliratie maximale"""
+        """Par defaut decoupe les TS dans la granularite maximale"""
         self.years = [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
     def reset_months(self):
-        """Par defaut decoupe les TS dans la granuliratie maximale"""
+        """Par defaut decoupe les TS dans la granularite maximale"""
         self.months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     def reset_days(self):
-        """Par defaut decoupe les TS dans la granuliratie maximale"""
+        """Par defaut decoupe les TS dans la granularite maximale"""
         self.days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 
     def reset_dataset(self):
@@ -88,7 +86,7 @@ class SeriesSupp:
 
     def get_data(self):
         """ Getter du dataset modifie """
-        return self.tmp_dataset
+        return self.tmp_dataset.copy()
 
     def import_dataset(self):
         """ Appel a la factory pour recuperer les donnees """
@@ -99,19 +97,17 @@ class SeriesSupp:
         """
         Smooth via rolling window
 
-        Parameters
-        ----------
-        data: DataFrame
-            La DF a smooth, attention a bien choisir la colonne voulu
-        wind: int
-            Taille de fentre
-        col: String
-            La colonne de la DF a smooth
+        Parameters:
+            * data: DataFrame
+                La DF a smooth, attention a bien choisir la colonne voulu
+            * wind: int
+                Taille de fentre
+            * col: String
+                La colonne de la DF a smooth
 
-        Returns
-        -------
-        data: DataFrame
-            La DF remanie
+            Returns:
+            data: DataFrame
+                La DF remanie
         """
         data[col] = data[col].rolling(window = wind, center = True).mean()
         data = data.drop(list(range(len(data) - wind,len(data))))
@@ -123,14 +119,12 @@ class SeriesSupp:
         """
         Dictionnaire full smooth
 
-        Parameters
-        ----------
-        wind: int
-            Taille de la fenetre 24 pour smooth journalier
+        Parameters:
+            * wind: int
+                Taille de la fenetre 24 pour smooth journalier
 
-        Returns
-        -------
-        NA
+        Returns:
+            NA
         """
         res = {}
         tampon = self.tmp_dataset.copy()
@@ -218,7 +212,11 @@ class SeriesSupp:
                     v = v.reset_index()
                     tmp = tmp.reset_index()
                     if tmp.shape[0] != 0:
-                        res[str(k) + "_" + str(m) ] = tmp
+                        if len(str(m)) == 1:
+                            ret_m = "0"+str(m)
+                        else:
+                            ret_m = m
+                        res[str(k) + "_" + str(ret_m) ] = tmp
                 except KeyError:
                     print(k + ": pas de données en " + str(m))
         if len(res) != 0:
@@ -231,7 +229,11 @@ class SeriesSupp:
             tmp = v.groupby(pd.Grouper(key='Date', freq='W'))
             for i in tmp:
                 if i[1].shape[0] != 0:
-                    res[str(k) + "_" + str(i[0].week) ] = i[1]
+                    if len(str(i[0].week)) == 1:
+                        ret_d = "0"+str(i[0].week)
+                    else:
+                        ret_d = i[0].week
+                    res[str(k) + "_" + str(ret_d) ] = i[1]
         if len(res) != 0:
             self.tmp_dataset = res
             self.days = True
@@ -246,15 +248,13 @@ class SeriesSupp:
         """
         Retourne toutes les series temporelles liees a un nom de capteur
 
-        Parameters
-        ----------
-        cpt: String
-            Nom du capteur desire
+        Parameters:
+            * cpt: String
+                Nom du capteur desire
 
-        Returns
-        -------
-        res: {Dict}
-            Sous dataset du capteur associe, les clefs sont les differente declinaisons en series temporelles du capteur, varie en longueur selon la granularite
+        Returns:
+            res: {Dict}
+                Sous dataset du capteur associe, les clefs sont les differente declinaisons en series temporelles du capteur, varie en longueur selon la granularite
         """
         res = {}
         for k, v in self.tmp_dataset.items():

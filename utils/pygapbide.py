@@ -2,18 +2,17 @@ class GapbideManager:
     """
     Manager d'une instance :class:Gabide
 
-    Variables d'Instance
-    --------------------
-    gp: Gapbide
-        Instance de l'algo a manager
-    dataset: Array[int]
-        Liste des donnees sax les entiers font office de symboles
-    res: Array[[int: X*], int: Y, Z(int: Z1, int: Z2, int: Z3)]
-        * X* Pattern d'entiers ex: 244695
-        * Y Support du pattern
-        * Z( * Z1: Position du patterns, indice de la transaction
-             * Z2: Indice au sein de la transaction du debut du patterns
-             * Z3: Indice de fin...)
+    Variables d'Instance:
+        * gp: Gapbide
+            Instance de l'algo a manager
+        * dataset: Array[int]
+            Liste des donnees sax les entiers font office de symboles
+        * res: Array[[int: X*], int: Y, Z(int: Z1, int: Z2, int: Z3)]
+            * X* Pattern d'entiers ex: 244695
+            * Y Support du pattern
+            * Z( * Z1: Position du patterns, indice de la transaction
+                 * Z2: Indice au sein de la transaction du debut du patterns
+                 * Z3: Indice de fin...)
     """
     def __init__(self, gp = None):
         self.gp = gp

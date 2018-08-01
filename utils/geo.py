@@ -11,7 +11,7 @@ import numpy as np
 
 class Geo:
     """
-    Classe entièrement dedie a l'affichage des capteur dans l'espace les donnees sont normees suivant un type de geolocalisation geologique
+    Classe entierement dedie a l'affichage des capteur dans l'espace les donnees sont normees suivant un type de geolocalisation geologique
     propre a la NC, la classe dispose de plusieurs type d'affichage
 
     Parameters:
@@ -47,7 +47,7 @@ class Geo:
         Recupere les donnees geographique
 
         Parameters:
-            source: String
+            * source: String
                 location ou recuperer ces donnees
 
         Returns:
@@ -62,7 +62,7 @@ class Geo:
         Parametre d'affichage surligne les min par ligne de DataFrame
 
         Parameters:
-            s: pandas
+            * s: pandas
                 Ligne du tableau
 
         Returns:
