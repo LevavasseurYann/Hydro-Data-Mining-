@@ -7,7 +7,7 @@ date_parser = pd.to_datetime
 
 class SeriesSupp:
     """Premet d'organiser et de manipuler les données.
-    
+
     Parameters:
         * cwd: String
             chemin d'acces ou le main est excecute
