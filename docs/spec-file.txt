@@ -454,5 +454,5 @@ https://repo.continuum.io/pkgs/main/win-64/_ipyw_jlab_nb_ext_conf-0.1.0-py36he67
 https://repo.continuum.io/pkgs/main/win-64/jupyter-1.0.0-py36_4.tar.bz2
 https://repo.continuum.io/pkgs/r/win-64/r-essentials-3.4.3-mro343_0.tar.bz2
 https://repo.continuum.io/pkgs/r/win-64/rstudio-1.1.383-vc14h5b9a52b_2.tar.bz2
-https://repo.anaconda.com/pkgs/main/win-64/conda-4.5.4-py36_0.tar.bz2
+https://repo.anaconda.com/pkgs/main/win-64/conda-4.5.8-py36_0.tar.bz2
 https://repo.continuum.io/pkgs/main/win-64/conda-build-3.4.1-py36_0.tar.bz2

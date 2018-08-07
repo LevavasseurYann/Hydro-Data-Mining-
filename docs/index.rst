@@ -31,7 +31,7 @@ Vous trouverez les données utilisées [ici]: https://drive.google.com/open?id=1
 
 .. note::
 
-   Ce projet est developpe dans un environement conda, un fichier spec-file est a telecharger ici >>> :download:`txt <req_07_08.txt>`
+   Ce projet est developpe dans un environement conda, un fichier spec-file est a telecharger ici >>> :download:`txt <spec-file.txt>`_.
 
 Des questions ? Besoin d'aide ?
    ----------------------------
