@@ -28,18 +28,42 @@ class PrefixSpanManager:
             self.export_format()
 
     def run(self):
+        """
+        Creer l'instance PrefixSpan avec les donnees pretraites
+        """
         self.ps = PrefixSpan(self.process_data)
 
     def export_format(self):
+        """
+        Modifie le format pour correspondre au besoin de l'instance de PrefixSpan
+        """
         tmp = []
         for elmt in self.data:
             tmp.append(elmt.ravel())
         self.process_data = tmp
 
     def topk(self, n, c = True):
+        """
+        Affiche les motifs les plus frequents(plus grand support) et par defaut les fermes
+
+        Parameters:
+            * n: int
+                Nombre de motifs a afficher
+        Returns:
+            Liste de motifs frequent
+        """
         return self.ps.topk(n, closed = c)
 
     def frequent(self, n):
+        """
+        Retourne les frequent de support n
+
+        Parameters:
+            * n: int
+                Support minimal
+        Returns:
+            Liste des motifs de support minimal n
+        """
         return self.ps.frequent(n)
 
     def plot(self, l):

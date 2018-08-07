@@ -52,6 +52,14 @@ utils.k\_shape module
     :undoc-members:
     :show-inheritance:
 
+utils.parser module
+---------------------
+
+.. automodule:: utils.parser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 utils.plot module
 -----------------
 

@@ -104,7 +104,7 @@ class SeriesSupp:
             * col: String
                 La colonne de la DF a smooth
 
-            Returns:
+        Returns:
             data: DataFrame
                 La DF remanie
         """

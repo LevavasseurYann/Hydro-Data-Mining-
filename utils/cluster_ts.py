@@ -12,7 +12,7 @@ from collections import Counter
 from utils.statics_func import *
 
 class ClusterTs:
-    """Classe disposant des methodes de transformation et de manipulation des donnees a des fins de partitionnements
+    """Classe disposant des methodes de transformations et de manipulations des donnees a des fins de partitionnements
 
     classe mere de:
         * :class:`kmean`
@@ -297,7 +297,7 @@ class ClusterTs:
 
     def capteur_parser(self):
         """
-        Parser des noms de capteurs, pour pouvoir garder en memoire les nom des capteur et leur extention de date selon la TS
+        Parser des noms de capteurs, pour pouvoir garder en memoire les nom des capteur et leur extension de date selon la TS
 
         Parameters:
             NA

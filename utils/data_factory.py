@@ -7,32 +7,28 @@ class DataFactory:
     """
     Factory fournis et importe les donnees en gerant le nombre d'intances
 
-    Parameters
-    ----------
-    cwd: String
-        chemin d'acces ou le main est excecute
+    Parameters:
+        * cwd: String
+            chemin d'acces ou le main est excecute
 
-    Variables
-    ---------
-    path_RG24: String
-        Chemin pour recuperer les donnees RG24
-    path_RG1: String
-        Chemin pour recuperer les donnees RG1
-    path_GW: String
-        Chemin pour recuperer les donnees GW
-    RG24: {Dict}
-        Les donnees RG24
-    RG1: {Dict}
-        Les donnees RG1
-    GW: {Dict}
-        Les donnees GW
+    Variables:
+        * path_RG24: String
+            Chemin pour recuperer les donnees RG24
+        * path_RG1: String
+            Chemin pour recuperer les donnees RG1
+        * path_GW: String
+            Chemin pour recuperer les donnees GW
+        * RG24: {Dict}
+            Les donnees RG24
+        * RG1: {Dict}
+            Les donnees RG1
+        * GW: {Dict}
+            Les donnees GW
 
-    Notes
-    -----
-
-    * RG24: Rain gauge, precipitation de pluie journaliere
-    * RG1: Rain gauge, precipitation de pluie horaire
-    * GW: Grand Water, donnees piezometric
+    Notes:
+        * RG24: Rain gauge, precipitation de pluie journaliere
+        * RG1: Rain gauge, precipitation de pluie horaire
+        * GW: Grand Water, donnees piezometriques
     """
     path_GW = "csv_prepro\GW"
     path_RG24 = "csv_prepro\RG\precipiation_RG"
@@ -48,14 +44,12 @@ class DataFactory:
         """
         Dirige l'importation vers la bonne methode selon le parametre
 
-        Parameters
-        ----------
-        name: String
-            Nom du type de donnees a recuperer
+        Parameters:
+            * name: String
+                Nom du type de donnees a recuperer
 
-        Returns
-        -------
-        None
+        Returns:
+            None
         """
         if name == "RG24":
             return self.get_RG24()
@@ -102,15 +96,13 @@ class DataFactory:
         """
         Recupere et retourne un Dictionnaire de Dataframe importe de multiple fichiers csv
 
-        Parameters
-        ----------
-        source: String
-            Chemin vers les fichiers csv
+        Parameters:
+            * source: String
+                Chemin vers les fichiers csv
 
-        Returns
-        -------
-        dataset: {Dict}
-            Dictionnaire des donnees par capteurs
+        Returns:
+            dataset: {Dict}
+                Dictionnaire des donnees par capteurs
         """
         all_files = [f for f in listdir(self.cwd +"\\"+ source) if isfile(join(self.cwd +"\\"+ source, f))]
         dataset = {}

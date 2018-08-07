@@ -12,23 +12,21 @@ class Kmean(cs):
     """
     Classe de partitionnement des donnees avec l'algorithm K-mean
 
-    Parameters
-    ----------
-    ss : SeriesSupp
-        instance du manager de series temporelles
+    Parameters:
+        * ss : SeriesSupp
+            instance du manager de series temporelles
 
-    Variables
-    ---------
-    seed: int
-        Valeur d'initialisation de l'algo, random.
-    counter: Counter
-        repartition des objets au sein des clusters
-    km: TimeSeriesKMeans
-        Instance de l'algo
-    clust_name: String
-        Nom de l'algo(affichage des plots)
-    metric: String
-        Choix du metrics utilise, principalement softdtw ici car tres efficace et rapide
+    Variables:
+        * seed: int
+            Valeur d'initialisation de l'algo, random.
+        * counter: Counter
+            repartition des objets au sein des clusters
+        * km: TimeSeriesKMeans
+            Instance de l'algo
+        * clust_name: String
+            Nom de l'algo(affichage des plots)
+        * metric: String
+            Choix du metrics utilise, principalement softdtw ici car tres efficace et rapide
     """
     def __init__(self, ss):
         super().__init__(ss)
@@ -43,14 +41,12 @@ class Kmean(cs):
         """
         initialisation de l'instance de l'algorithm avec les parametres actuels
 
-        Parameters
-        ------------
-        v: boolean
-            Verbose, affiche les info lie au partitionnement
+        Parameters:
+            * v: boolean
+                Verbose, affiche les info lie au partitionnement
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         self.km = TimeSeriesKMeans(n_clusters = self.n, metric = self.metric, metric_params = {"gamma_sdtw": .01}, verbose = v, random_state = self.seed)
 
@@ -58,13 +54,11 @@ class Kmean(cs):
         """
         Effectue le partitionnement
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         self.ts_clust = self.km.fit_predict(self.ts)
 
@@ -72,12 +66,10 @@ class Kmean(cs):
         """
         Compte les objets au sein des clusters
 
-        Parameters
-        ------------
-        NA
+        Parameters:
+            NA
 
-        Returns
-        ----------
-        NA
+        Returns:
+            NA
         """
         self.counter = Counter(self.ts_clust)

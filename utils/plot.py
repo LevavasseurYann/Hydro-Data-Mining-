@@ -35,6 +35,18 @@ class Plot:
         self.colors = COLORS
 
     def change_mode(self, m):
+        """
+        Change le type d'affichage:
+            * 1: Markers
+            * 2: Lines
+            * 3: Lines+Markers
+
+        Parameters:
+            * m: int [1:3]
+                L'entier qui determiner le mode actuel, si en dehors de [1:3] reste au meme mode qu'avant l'appel
+        Returns:
+            NA
+        """
         if m == 1:
             self.mode = "markers"
         elif m == 2:

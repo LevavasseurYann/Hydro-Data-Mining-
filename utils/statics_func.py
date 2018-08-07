@@ -3,14 +3,12 @@ def openfile_dialog():
     """
     Boite de dialogue permetant de recuperer les fichers de sauvegarde de partitionnement Pickle
 
-    Parameters
-    ----------
-    NA
+    Parameters:
+        NA
 
-    Returns
-    -------
-    fname: String
-        Chemin vers le fichier selectionne
+    Returns:
+        fname: String
+            Chemin vers le fichier selectionne
     """
     from PyQt5 import QtGui
     from PyQt5 import QtGui, QtWidgets
@@ -28,16 +26,14 @@ def thresholding_algo(y, lag, threshold, influence):
     """
     Algorithm de detection de pics dans une TS
 
-    Parameters
-    ----------
-    lag
-    threshold
-    influence
+    Parameters:
+        * lag 
+        * threshold
+        * influence
 
-    Returns
-    -------
-    unnamed: {Dict}
-        Informations sortie de l'algo, signals est une liste de meme len que la TS, representant les ppics via une variation boolean
+    Returns:
+        unnamed: {Dict}
+            Informations sortie de l'algo, signals est une liste de meme len que la TS, representant les ppics via une variation boolean
     """
     signals = np.zeros(len(y))
     filteredY = np.array(y)
