@@ -5,3 +5,11 @@ csv/
 docs/_build
 utils/dump.txt
 zone_de_test.ipynb
+spmf/spmf.jar
+csv_prepro.zip
+cluster/
+csv_prepro/
+docs/_templates/
+geo/old/
+other_files_info/
+utils/__pycache__/
