@@ -12,7 +12,8 @@
 * [prefixspan](https://github.com/chuanconggao/PrefixSpan-py)
 
 
-** Badges **
+**Badges**
+
 |Info|Links|
 |----------------|---|
 |Documentation|[![Documentation Status](http://readthedocs.org/projects/workspace-internship/badge/?version=latest)](https://workspace-internship.readthedocs.io/fr/latest/?badge=latest)|
