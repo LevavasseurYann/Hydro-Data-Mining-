@@ -12,7 +12,8 @@
 * [prefixspan](https://github.com/chuanconggao/PrefixSpan-py)
 
 
-**Badges**
+-----------
+**Badges:**
 
 |Info|Links|
 |----------------|---|
