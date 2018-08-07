@@ -9,8 +9,7 @@ import numpy as np
 from utils.cluster_ts import ClusterTs as cs
 
 class Kmean(cs):
-    """
-    Classe de partitionnement des donnees avec l'algorithm K-mean
+    """Classe de partitionnement des donnees avec l'algorithm K-mean
 
     Parameters:
         * ss : SeriesSupp

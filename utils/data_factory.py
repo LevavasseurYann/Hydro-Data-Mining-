@@ -4,8 +4,7 @@ from os.path import isfile, join
 import os
 
 class DataFactory:
-    """
-    Factory fournis et importe les donnees en gerant le nombre d'intances
+    """Factory fournis et importe les donnees en gerant le nombre d'intances
 
     Parameters:
         * cwd: String

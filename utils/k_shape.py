@@ -9,8 +9,7 @@ import numpy as np
 from utils.cluster_ts import ClusterTs as cs
 
 class Kshape(cs):
-    """
-    Classe de partitionnement des donnees avec l'algorithm K-shape
+    """Classe de partitionnement des donnees avec l'algorithm K-shape
 
     Parameters:
         * ss : SeriesSupp
