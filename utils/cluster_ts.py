@@ -127,13 +127,17 @@ class ClusterTs:
         """
         df = []
         dn = []
+        if self.ss.days:
+            size_max = 170
+        else:
+            size_max = 750
         if other_data != None:
             data_dict = other_data
         else:
             data_dict = self.ss.get_data()
         for k, v in data_dict.items():
             if not self.check_equal(v["Valeur"].values):
-                if len(v["Valeur"].values) > self.size_min:
+                if len(v["Valeur"].values) > self.size_min and len(v["Valeur"].values) < size_max:
                     df.append(v["Valeur"].values)
                     dn.append(k)
                     self.capteurs_names.append(k)

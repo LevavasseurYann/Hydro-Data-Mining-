@@ -1,4 +1,3 @@
-
 class Parser:
     def __init__(self):
         pass
@@ -18,3 +17,5 @@ class Parser:
             res_str += tmp_str
         res_str += "-2"
         return res_str
+
+    

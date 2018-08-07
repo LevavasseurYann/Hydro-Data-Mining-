@@ -110,7 +110,7 @@ class Plot:
 
     def plot_scatter(self, data):
         """
-        Afficha des donnees avant cluster, permet de visualiser les donnees decoupe par exemple
+        Affiche des donnees avant cluster, permet de visualiser les donnees decoupe par exemple
         data: [DICT] les donnees key: Capteur value: Dataframe
         """
         all_trace = []

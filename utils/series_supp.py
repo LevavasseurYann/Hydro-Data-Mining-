@@ -121,7 +121,8 @@ class SeriesSupp:
         Parameters:
             * wind: int
                 Taille de la fenetre 24 pour smooth journalier
-
+            * col: str (DEFAUlT = "Valeur")
+                Colonne cible de l'action
         Returns:
             NA
         """
