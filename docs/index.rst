@@ -27,11 +27,13 @@ Téléchargement via ``Git``:
 
    git clone https://github.com/LevavasseurYann/workspace_internship.git
 
-Vous trouverez les données utilisées >>> :download:[ici](https://drive.google.com/open?id=1mrkmpStwi56JLvjBkWdFXktDjPgu4QCJ).
+.. note::
+
+    Vous trouverez les données utilisées [en cliquant ici](https://drive.google.com/open?id=1mrkmpStwi56JLvjBkWdFXktDjPgu4QCJ). :download:
 
 .. note::
 
-   Ce projet est developpe dans un environement conda, un fichier spec-file est a telecharger ici >>> :download:`txt <spec-file.txt>`
+    Ce projet est developpe dans un environement conda, un fichier spec-file est a telecharger ici >>> :download:`txt <spec-file.txt>`
 
 Des questions ? Besoin d'aide ?
    ----------------------------
