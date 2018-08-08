@@ -27,7 +27,7 @@ Téléchargement via ``Git``:
 
    git clone https://github.com/LevavasseurYann/workspace_internship.git
 
-Vous trouverez les données réelles utilisées >>> :download:`ici <https://drive.google.com/open?id=1mrkmpStwi56JLvjBkWdFXktDjPgu4QCJ>`_.
+Vous trouverez les données réelles utilisées >>> https://drive.google.com/open?id=1mrkmpStwi56JLvjBkWdFXktDjPgu4QCJ
 
 .. note::
 
