@@ -20,6 +20,36 @@ def openfile_dialog():
 
 import numpy as np
 import pylab
+from statsmodels.tsa.stattools import adfuller
+import pandas as pd
+import matplotlib.pylab as plt
+def test_stationarity(timeseries, w):
+    """
+    Fonction d'etude de stationarite d'une serie temporelle.
+
+    Parameters:
+        * timeseries: DataFrame
+    """
+    #Determing rolling statistics
+    rolmean = timeseries.rolling(window=w,center=False).mean()
+    rolstd = timeseries.rolling(window=w,center=False).std()
+
+    #Plot rolling statistics:
+    fig = plt.figure(figsize=(14,7))
+    orig = plt.plot(timeseries, color='blue',label='Original')
+    mean = plt.plot(rolmean, color='red', label='Rolling Mean')
+    std = plt.plot(rolstd, color='black', label = 'Rolling Std')
+    plt.legend(loc='best')
+    plt.title('Rolling Mean & Standard Deviation')
+    plt.show(block=False)
+
+    #Perform Dickey-Fuller test:
+    print ('Results of Dickey-Fuller Test:')
+    dftest = adfuller(timeseries.iloc[:,0].values, autolag='AIC')
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
 
 # Fonction de dedection de pics
 def thresholding_algo(y, lag, threshold, influence):
@@ -27,7 +57,7 @@ def thresholding_algo(y, lag, threshold, influence):
     Algorithm de detection de pics dans une TS
 
     Parameters:
-        * lag 
+        * lag
         * threshold
         * influence
 
