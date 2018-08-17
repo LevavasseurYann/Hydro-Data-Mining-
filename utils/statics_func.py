@@ -19,7 +19,6 @@ def openfile_dialog():
     return fname
 
 import numpy as np
-import pylab
 from statsmodels.tsa.stattools import adfuller
 import pandas as pd
 import matplotlib.pylab as plt
@@ -35,7 +34,7 @@ def test_stationarity(timeseries, w):
     rolstd = timeseries.rolling(window=w,center=False).std()
 
     #Plot rolling statistics:
-    fig = plt.figure(figsize=(14,7))
+    fig = plt.figure(figsize=(9,5))
     orig = plt.plot(timeseries, color='blue',label='Original')
     mean = plt.plot(rolmean, color='red', label='Rolling Mean')
     std = plt.plot(rolstd, color='black', label = 'Rolling Std')
